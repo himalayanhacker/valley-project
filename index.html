@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover Uttarshall Valley — A pristine Himalayan paradise in Mandi district, Himachal Pradesh. Trekking, wildlife, river rafting and unforgettable adventures.">
+    <meta name="keywords" content="Uttarshall Valley, Mandi, Himachal Pradesh, trekking, Prashar Lake, Barot Valley, Shikari Devi, adventure tourism">
+    <title>Uttarshall Valley | Discover Paradise in the Himalayas</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#010409',
+                        panel: '#0d1117',
+                        sky: '#38bdf8',
+                        'sky-dark': '#0ea5e9',
+                        leaf: '#4ade80',
+                        'leaf-dark': '#22c55e',
+                        border: 'rgba(56,189,248,0.15)',
+                        'border-strong': 'rgba(56,189,248,0.3)',
+                        sub: '#8b949e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-0.04em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #010409;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #010409;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .preloader-text {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Gradient Overlays */
+        .hero-gradient {
+            background: linear-gradient(to top, #010409, rgba(1,4,9,0.6), transparent);
+        }
+        
+        .radial-gradient {
+            background: radial-gradient(ellipse at center, rgba(56,189,248,0.08), transparent 70%);
+        }
+        
+        /* Scan Line Animation */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #38bdf8, #4ade80, transparent);
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        /* Glow Effects */
+        .glow-mint {
+            box-shadow: 0 0 15px rgba(56,189,248,0.3);
+        }
+        
+        .glow-mint-hover:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.5);
+        }
+        
+        /* Card Hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover {
+            background: rgba(56,189,248,0.03);
+            border-color: rgba(56,189,248,0.5);
+        }
+        
+        /* Image Hover */
+        .img-hover {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .img-hover:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(56,189,248,0.3);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+        
+        /* Stats Counter */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, #38bdf8, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 12px;
+        }
+        
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+            }
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        /* Category Tag */
+        .category-tag {
+            background: rgba(56,189,248,0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        
+        /* Rating Stars */
+        .star-filled {
+            color: #38bdf8;
+        }
+        
+        .star-empty {
+            color: #888;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56,189,248,0.2);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        /* Navigation Active */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Preloader -->
+    <div class="preloader">
+        <span class="preloader-text">Loading Uttarshall Valley...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-sky to-leaf flex items-center justify-center">
+                    <iconify-icon icon="mdi:mountain" class="text-void text-lg"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-wide uppercase">Uttarshall Valley</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#overview" class="nav-link active text-xs font-semibold uppercase tracking-wide text-sky">Overview</a>
+                <a href="gallery.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Gallery</a>
+                <a href="explore.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Explore</a>
+                <a href="packages.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Packages</a>
+                <a href="contact.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Contact</a>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="openAuthModal('login')" class="btn-secondary px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded">
+                    Sign In
+                </button>
+                <a href="#packages" class="btn-primary px-5 py-2 text-xs rounded glow-mint-hover">
+                    Book Now
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">
+                <iconify-icon icon="mdi:menu"></iconify-icon>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-panel border-t border-border">
+            <div class="px-6 py-4 flex flex-col gap-4">
+                <a href="#overview" class="text-sm font-medium text-mint">Overview</a>
+                <a href="gallery.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Gallery</a>
+                <a href="explore.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Explore</a>
+                <a href="packages.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Packages</a>
+                <a href="contact.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Contact</a>
+                <div class="divider my-2"></div>
+                <button onclick="openAuthModal('login')" class="btn-secondary px-5 py-3 text-sm font-semibold rounded">Sign In</button>
+                <a href="packages.html" class="btn-primary px-5 py-3 text-sm text-center rounded">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative h-screen flex flex-col items-center justify-end pb-24 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/emerald-valley-hero/1920/1080" alt="Emerald Valley Panorama" 
+                 class="w-full h-full object-cover grayscale contrast-125 opacity-60">
+            <div class="hero-gradient absolute inset-0"></div>
+            <div class="radial-gradient absolute inset-0"></div>
+        </div>
+        
+        <!-- Scan Line -->
+        <div class="scan-line"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            <p class="hero-label text-xs font-mono font-medium tracking-widest uppercase text-mint mb-6">
+                Mandi District · Himachal Pradesh · India
+            </p>
+            <h1 class="hero-title text-4xl md:text-7xl font-semibold tracking-tightest leading-none mb-6">
+                <span class="block text-white">UTTARSHALL</span>
+                <span class="block bg-gradient-to-r from-white to-mint bg-clip-text text-transparent">VALLEY</span>
+            </h1>
+            <p class="hero-desc text-sub text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                A pristine Himalayan paradise in Mandi district where snow leopards roam ancient deodar forests, sacred lakes mirror towering peaks, and every trail leads to breathtaking discovery.
+            </p>
+            <div class="hero-cta flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#packages" class="btn-primary px-10 py-4 text-sm rounded glow-mint">
+                    Plan Your Visit
+                </a>
+                <a href="#overview" class="btn-secondary px-10 py-4 text-sm rounded flex items-center justify-center gap-2">
+                    <iconify-icon icon="mdi:play-circle-outline"></iconify-icon>
+                    Watch Video
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-sub">
+            <span class="text-xs uppercase tracking-widest">Scroll</span>
+            <iconify-icon icon="mdi:chevron-down" class="text-xl animate-bounce"></iconify-icon>
+        </div>
+    </section>
+
+    <!-- Quick Stats Bar -->
+    <section class="bg-panel border-y border-border py-8">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div class="stat-item text-center">
+                <p class="stat-number text-2xl md:text-3xl">4,200m</p>
+                <p class="text-xs text-sub uppercase tracking-wide mt-1">Peak Elevation (Shikari Devi)</p>
+            </div>
+            <div class="stat-item text-center">
+                <p class="stat-number text-2xl md:text-3xl">1,200km²</p>
+                <p class="text-xs text-sub uppercase tracking-wide mt-1">Valley Spread</p>
+            </div>
+            <div class="stat-item text-center">
+                <p class="stat-number text-2xl md:text-3xl">32</p>
+                <p class="text-xs text-sub uppercase tracking-wide mt-1">Trekking Routes</p>
+            </div>
+            <div class="stat-item text-center">
+                <p class="stat-number text-2xl md:text-3xl">180+</p>
+                <p class="text-xs text-sub uppercase tracking-wide mt-1">Wildlife Species</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valley Overview Section -->
+    <section id="overview" class="py-24 md:py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal mb-16 md:mb-24">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-2 h-2 bg-mint rounded-full"></div>
+                    <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Overview</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-6">
+                    A Natural Wonder
+                </h2>
+                <div class="divider w-24 mb-6"></div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <!-- Text Content -->
+                <div class="reveal">
+                    <h3 class="text-xl md:text-2xl font-medium tracking-tight mb-6">
+                        Where Mountains Meet the Sky
+                    </h3>
+                    <div class="space-y-4 text-sub leading-relaxed">
+                        <p>
+                            Nestled in the heart of the Northern Alps, Emerald Valley spans over 850 square kilometers of pristine wilderness. The valley's unique microclimate creates a year-round destination where alpine meadows burst with wildflowers in spring, crystal-clear lakes invite swimmers in summer, and snow-capped peaks offer world-class skiing in winter.
+                        </p>
+                        <p>
+                            The valley is home to diverse ecosystems ranging from temperate rainforests at lower elevations to alpine tundra above the tree line. Ancient glaciers have carved dramatic landscapes over millennia, leaving behind cirques, moraines, and pristine tarns that reflect the surrounding peaks.
+                        </p>
+                        <p>
+                            Recognized as a UNESCO World Heritage Site, Emerald Valley combines natural beauty with rich cultural heritage. Indigenous communities have inhabited these lands for over 10,000 years, and their traditions continue to shape the valley's identity today.
+                        </p>
+                    </div>
+                    
+                    <!-- Key Features -->
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="p-4 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:weather-sunny" class="text-mint text-2xl mb-2"></iconify-icon>
+                            <h4 class="text-sm font-semibold mb-1">Best Seasons</h4>
+                            <p class="text-xs text-sub">June - September, December - March</p>
+                        </div>
+                        <div class="p-4 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:car" class="text-mint text-2xl mb-2"></iconify-icon>
+                            <h4 class="text-sm font-semibold mb-1">Accessibility</h4>
+                            <p class="text-xs text-sub">2hr drive from International Airport</p>
+                        </div>
+                        <div class="p-4 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:account-group" class="text-mint text-2xl mb-2"></iconify-icon>
+                            <h4 class="text-sm font-semibold mb-1">Annual Visitors</h4>
+                            <p class="text-xs text-sub">~500,000 (sustainable tourism)</p>
+                        </div>
+                        <div class="p-4 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:shield-check" class="text-mint text-2xl mb-2"></iconify-icon>
+                            <h4 class="text-sm font-semibold mb-1">Conservation</h4>
+                            <p class="text-xs text-sub">Protected since 1952</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Image Grid -->
+                <div class="reveal">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <div class="relative overflow-hidden rounded-lg aspect-[4/5]">
+                                <img src="https://picsum.photos/seed/valley-meadow/600/750" alt="Alpine Meadow" 
+                                     class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-void to-transparent">
+                                    <p class="text-xs font-medium">Alpine Meadows</p>
+                                </div>
+                            </div>
+                            <div class="relative overflow-hidden rounded-lg aspect-square">
+                                <img src="https://picsum.photos/seed/valley-lake/600/600" alt="Crystal Lake" 
+                                     class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-void to-transparent">
+                                    <p class="text-xs font-medium">Crystal Lake</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-8">
+                            <div class="relative overflow-hidden rounded-lg aspect-square">
+                                <img src="https://picsum.photos/seed/valley-forest/600/600" alt="Ancient Forest" 
+                                     class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-void to-transparent">
+                                    <p class="text-xs font-medium">Ancient Forest</p>
+                                </div>
+                            </div>
+                            <div class="relative overflow-hidden rounded-lg aspect-[4/5]">
+                                <img src="https://picsum.photos/seed/valley-peaks/600/750" alt="Mountain Peaks" 
+                                     class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-void to-transparent">
+                                    <p class="text-xs font-medium">Summit Peaks</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location Map Section -->
+            <div class="reveal mt-20 p-6 md:p-10 border border-border rounded-xl bg-panel/50">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Location & Access</h4>
+                        <div class="space-y-3 text-sm text-sub">
+                            <p class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:map-marker" class="text-mint text-lg mt-0.5"></iconify-icon>
+                                <span>Northern Alps, Greenwood County<br>Coordinates: 46.8523° N, 9.5321° E</span>
+                            </p>
+                            <p class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:airplane" class="text-mint text-lg mt-0.5"></iconify-icon>
+                                <span>Nearest Airport: Greenwood International (GWI)<br>120km, approximately 2 hours by car</span>
+                            </p>
+                            <p class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:train" class="text-mint text-lg mt-0.5"></iconify-icon>
+                                <span>Train: Valley Express from Greenwood Central<br>Scenic 2.5-hour journey</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Climate</h4>
+                        <div class="space-y-3 text-sm text-sub">
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span>Summer (Jun-Aug)</span>
+                                <span class="text-white">15-25°C<span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span>Autumn (Sep-Nov)</span>
+                                <span class="text-white">5-18°C</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span>Winter (Dec-Feb)</span>
+                                <span class="text-white">-10 to 5°C</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span>Spring (Mar-May)</span>
+                                <span class="text-white">5-20°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Valley Rules</h4>
+                        <ul class="space-y-2 text-sm text-sub">
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint mt-0.5"></iconify-icon>
+                                <span>Stay on marked trails</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint mt-0.5"></iconify-icon>
+                                <span>Carry out all trash</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint mt-0.5"></iconify-icon>
+                                <span>Keep distance from wildlife</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint mt-0.5"></iconify-icon>
+                                <span>Camp only in designated areas</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint mt-0.5"></iconify-icon>
+                                <span>No drones without permit</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery" class="py-24 md:py-32 bg-panel">
+        <div class="max-w-[1920px] mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal max-w-7xl mx-auto mb-12">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-2 h-2 bg-mint rounded-full"></div>
+                            <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Gallery</span>
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
+                            Visitor Photo Gallery
+                        </h2>
+                        <p class="text-sub max-w-xl">
+                            Stunning moments captured by our visitors. Share your own photos and become part of the Emerald Valley story.
+                        </p>
+                    </div>
+                    <button onclick="openUploadModal()" class="btn-primary px-6 py-3 text-xs rounded glow-mint-hover flex items-center gap-2 self-start">
+                        <iconify-icon icon="mdi:cloud-upload"></iconify-icon>
+                        Upload Your Photos
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="reveal max-w-7xl mx-auto mb-8">
+                <div class="flex flex-wrap gap-2">
+                    <button class="gallery-filter active px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-mint text-mint rounded" data-category="all">
+                        All Photos
+                    </button>
+                    <button class="gallery-filter px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border text-sub rounded hover:border-mint hover:text-mint transition-all" data-category="landscapes">
+                        Landscapes
+                    </button>
+                    <button class="gallery-filter px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border text-sub rounded hover:border-mint hover:text-mint transition-all" data-category="wildlife">
+                        Wildlife
+                    </button>
+                    <button class="gallery-filter px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border text-sub rounded hover:border-mint hover:text-mint transition-all" data-category="activities">
+                        Activities
+                    </button>
+                    <button class="gallery-filter px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border text-sub rounded hover:border-mint hover:text-mint transition-all" data-category="seasons">
+                        Seasons
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="reveal gallery-grid max-w-7xl mx-auto" id="galleryGrid">
+                <!-- Gallery items will be populated by JS -->
+            </div>
+            
+            <!-- Load More -->
+            <div class="text-center mt-12">
+                <button class="btn-secondary px-8 py-3 text-xs font-semibold uppercase tracking-wide rounded">
+                    Load More Photos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Hub Section -->
+    <section id="content" class="py-24 md:py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal mb-12">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-2 h-2 bg-mint rounded-full"></div>
+                    <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Content Hub</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
+                    Explore Stories & Guides
+                </h2>
+                <p class="text-sub max-w-xl">
+                    Discover insider tips, travel guides, and fascinating stories about Emerald Valley's natural wonders.
+                </p>
+            </div>
+            
+            <!-- Search and Filter -->
+            <div class="reveal mb-10">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Search -->
+                    <div class="relative flex-grow">
+                        <iconify-icon icon="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-sub text-lg"></iconify-icon>
+                        <input type="text" id="contentSearch" placeholder="Search articles..." 
+                               class="w-full bg-panel border border-border rounded-lg pl-12 pr-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <select id="contentFilter" class="bg-panel border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer min-w-[200px]">
+                        <option value="all">All Categories</option>
+                        <option value="guides">Travel Guides</option>
+                        <option value="culture">Local Culture</option>
+                        <option value="hiking">Hiking Trails</option>
+                        <option value="wildlife">Wildlife</option>
+                        <option value="history">History</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Featured Article -->
+            <div class="reveal mb-12">
+                <div class="relative overflow-hidden rounded-xl border border-border card-hover cursor-pointer group">
+                    <div class="grid md:grid-cols-2">
+                        <div class="aspect-video md:aspect-auto overflow-hidden">
+                            <img src="https://picsum.photos/seed/valley-featured/800/500" alt="Featured Article" 
+                                 class="w-full h-full object-cover img-hover">
+                        </div>
+                        <div class="p-8 md:p-10 flex flex-col justify-center">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="category-tag">Featured</span>
+                                <span class="category-tag">Travel Guide</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-semibold tracking-tight mb-4 group-hover:text-mint transition-colors">
+                                The Complete Guide to Emerald Valley: 7 Days of Adventure
+                            </h3>
+                            <p class="text-sub mb-6 leading-relaxed">
+                                From sunrise hikes to stargazing sessions, discover how to make the most of your week in the valley. Includes detailed trail maps and insider tips.
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://picsum.photos/seed/author1/100/100" alt="Author" class="w-10 h-10 rounded-full object-cover">
+                                    <div>
+                                        <p class="text-sm font-medium">Sarah Mitchell</p>
+                                        <p class="text-xs text-sub">Dec 15, 2024 • 15 min read</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 text-sub">
+                                    <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                                    <span class="text-xs">12.5k views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Articles Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="articlesGrid">
+                <!-- Articles populated by JS -->
+            </div>
+            
+            <!-- Load More -->
+            <div class="text-center mt-12">
+                <button class="btn-secondary px-8 py-3 text-xs font-semibold uppercase tracking-wide rounded">
+                    Load More Articles
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking & Packages Section -->
+    <section id="packages" class="py-24 md:py-32 bg-panel">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal mb-12">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-2 h-2 bg-mint rounded-full"></div>
+                    <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Packages</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
+                    Travel Packages
+                </h2>
+                <p class="text-sub max-w-xl">
+                    Curated experiences designed to showcase the best of Emerald Valley. All packages include accommodation, guided tours, and exclusive access.
+                </p>
+            </div>
+            
+            <!-- Packages Grid -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16" id="packagesGrid">
+                <!-- Packages populated by JS -->
+            </div>
+            
+            <!-- Booking Calendar -->
+            <div class="reveal">
+                <div class="border border-border rounded-xl p-6 md:p-10 bg-void/50">
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <!-- Calendar -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-6">Select Your Dates</h3>
+                            <div class="bg-panel rounded-lg p-4 border border-border">
+                                <div class="flex items-center justify-between mb-4">
+                                    <button id="prevMonth" class="p-2 hover:text-mint transition-colors">
+                                        <iconify-icon icon="mdi:chevron-left" class="text-xl"></iconify-icon>
+                                    </button>
+                                    <span id="currentMonth" class="font-semibold"></span>
+                                    <button id="nextMonth" class="p-2 hover:text-mint transition-colors">
+                                        <iconify-icon icon="mdi:chevron-right" class="text-xl"></iconify-icon>
+                                    </button>
+                                </div>
+                                <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center text-sm">
+                                    <!-- Calendar generated by JS -->
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-4 text-xs text-sub">
+                                <span class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-mint rounded"></span> Available
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-sub/30 rounded"></span> Limited
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-red-500/50 rounded"></span> Sold Out
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Booking Form -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-6">Quick Booking</h3>
+                            <form id="bookingForm" class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Check-in</label>
+                                        <input type="date" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Check-out</label>
+                                        <input type="date" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Package</label>
+                                    <select required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                        <option value="">Select a package</option>
+                                        <option value="essential">Essential Explorer - 3 Days</option>
+                                        <option value="adventure">Adventure Seeker - 5 Days</option>
+                                        <option value="ultimate">Ultimate Experience - 7 Days</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Adults</label>
+                                        <select class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                            <option>1</option>
+                                            <option selected>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Children</label>
+                                        <select class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                            <option selected>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Email</label>
+                                    <input type="email" required placeholder="your@email.com" class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Special Requests</label>
+                                    <textarea rows="3" placeholder="Any dietary requirements or special needs..." class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none resize-none"></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary w-full py-4 text-sm rounded glow-mint-hover flex items-center justify-center gap-2">
+                                    <iconify-icon icon="mdi:calendar-check"></iconify-icon>
+                                    Check Availability
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cancellation Policy -->
+            <div class="mt-10 p-6 border border-border rounded-lg bg-void/30">
+                <div class="flex items-start gap-4">
+                    <iconify-icon icon="mdi:shield-check" class="text-mint text-2xl mt-1"></iconify-icon>
+                    <div>
+                        <h4 class="font-semibold mb-2">Flexible Cancellation Policy</h4>
+                        <p class="text-sm text-sub leading-relaxed">
+                            We understand plans can change. Cancel up to 48 hours before your check-in date for a full refund. Cancellations within 48 hours will receive a 50% refund or full credit towards a future booking. In case of extreme weather conditions, all bookings can be rescheduled at no additional cost.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-24 md:py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Section Header -->
+            <div class="reveal mb-12">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-2 h-2 bg-mint rounded-full"></div>
+                    <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Reviews</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
+                    What Visitors Say
+                </h2>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-1">
+                        <iconify-icon icon="mdi:star" class="text-mint text-xl"></iconify-icon>
+                        <iconify-icon icon="mdi:star" class="text-mint text-xl"></iconify-icon>
+                        <iconify-icon icon="mdi:star" class="text-mint text-xl"></iconify-icon>
+                        <iconify-icon icon="mdi:star" class="text-mint text-xl"></iconify-icon>
+                        <iconify-icon icon="mdi:star-half-full" class="text-mint text-xl"></iconify-icon>
+                    </div>
+                    <span class="text-sub">4.8 out of 5 · 2,847 reviews</span>
+                </div>
+            </div>
+            
+            <!-- Reviews Grid -->
+            <div class="grid md:grid-cols-3 gap-6" id="reviewsGrid">
+                <!-- Reviews populated by JS -->
+            </div>
+            
+            <!-- View All -->
+            <div class="text-center mt-12">
+                <button class="btn-secondary px-8 py-3 text-xs font-semibold uppercase tracking-wide rounded">
+                    View All Reviews
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 md:py-32 bg-panel">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16">
+                <!-- Contact Info -->
+                <div class="reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Contact</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-6">
+                        Get in Touch
+                    </h2>
+                    <p class="text-sub mb-8 leading-relaxed">
+                        Have questions about visiting Emerald Valley? Our team is here to help you plan your perfect adventure.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-void border border-border flex items-center justify-center">
+                                <iconify-icon icon="mdi:map-marker" class="text-mint text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Visitor Center</h4>
+                                <p class="text-sm text-sub">123 Valley Road, Emerald Valley<br>Greenwood County, 12345</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-void border border-border flex items-center justify-center">
+                                <iconify-icon icon="mdi:phone" class="text-mint text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Phone</h4>
+                                <p class="text-sm text-sub">+1 (555) 123-4567<br>Mon-Sun: 8:00 AM - 8:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-void border border-border flex items-center justify-center">
+                                <iconify-icon icon="mdi:email" class="text-mint text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Email</h4>
+                                <p class="text-sm text-sub">info@emeraldvalley.com<br>bookings@emeraldvalley.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="mt-10">
+                        <h4 class="text-xs text-sub uppercase tracking-wide mb-4">Follow Us</h4>
+                        <div class="flex gap-3">
+                            <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                                <iconify-icon icon="mdi:instagram" class="text-lg"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                                <iconify-icon icon="mdi:facebook" class="text-lg"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                                <iconify-icon icon="mdi:twitter" class="text-lg"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                                <iconify-icon icon="mdi:youtube" class="text-lg"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="reveal">
+                    <form id="contactForm" class="border border-border rounded-xl p-6 md:p-8 bg-void/50">
+                        <h3 class="text-xl font-semibold mb-6">Send us a Message</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">First Name</label>
+                                    <input type="text" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Last Name</label>
+                                    <input type="text" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Email</label>
+                                <input type="email" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Subject</label>
+                                <select class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                    <option>General Inquiry</option>
+                                    <option>Booking Question</option>
+                                    <option>Photo Submission</option>
+                                    <option>Partnership</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Message</label>
+                                <textarea rows="5" required class="w-full bg-panel border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none resize-none"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full py-4 text-sm rounded glow-mint-hover">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-border py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-mint flex items-center justify-center">
+                            <iconify-icon icon="mdi:mountain" class="text-void text-xl"></iconify-icon>
+                        </div>
+                        <span class="text-lg font-semibold tracking-wide">Emerald Valley</span>
+                    </div>
+                    <p class="text-sm text-sub leading-relaxed">
+                        A UNESCO World Heritage Site offering pristine wilderness, breathtaking landscapes, and unforgettable adventures.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#overview" class="hover:text-mint transition-colors">Valley Overview</a></li>
+                        <li><a href="gallery.html" class="hover:text-mint transition-colors">Photo Gallery</a></li>
+                        <li><a href="explore.html" class="hover:text-mint transition-colors">Travel Guides</a></li>
+                        <li><a href="packages.html" class="hover:text-mint transition-colors">Packages</a></li>
+                        <li><a href="contact.html" class="hover:text-mint transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Trail Maps</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Wildlife Guide</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Weather Updates</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Safety Guidelines</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Accessibility</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal -->
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Refund Policy</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="divider mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-sub">
+                    © 2025 Uttarshall Valley Tourism. Mandi, Himachal Pradesh, India.
+                </p>
+                <p class="text-xs text-sub">
+                    Designed with <iconify-icon icon="mdi:heart" class="text-mint inline"></iconify-icon> for nature lovers
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="bg-panel border border-border rounded-xl p-8 w-full max-w-md mx-4 relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-sub hover:text-white transition-colors">
+                <iconify-icon icon="mdi:close" class="text-xl"></iconify-icon>
+            </button>
+            
+            <div id="loginForm">
+                <h3 class="text-2xl font-semibold mb-2">Welcome Back</h3>
+                <p class="text-sub text-sm mb-6">Sign in to manage bookings and upload photos</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Email</label>
+                        <input type="email" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Password</label>
+                        <input type="password" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    <button class="btn-primary w-full py-3 text-sm rounded">Sign In</button>
+                    <p class="text-center text-sm text-sub">
+                        Don't have an account? <button onclick="toggleAuthForm()" class="text-mint hover:underline">Create one</button>
+                    </p>
+                </div>
+            </div>
+            
+            <div id="registerForm" class="hidden">
+                <h3 class="text-2xl font-semibold mb-2">Create Account</h3>
+                <p class="text-sub text-sm mb-6">Join our community of nature enthusiasts</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Full Name</label>
+                        <input type="text" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Email</label>
+                        <input type="email" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Password</label>
+                        <input type="password" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    <button class="btn-primary w-full py-3 text-sm rounded">Create Account</button>
+                    <p class="text-center text-sm text-sub">
+                        Already have an account? <button onclick="toggleAuthForm()" class="text-mint hover:underline">Sign in</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="bg-panel border border-border rounded-xl p-8 w-full max-w-lg mx-4 relative">
+            <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-sub hover:text-white transition-colors">
+                <iconify-icon icon="mdi:close" class="text-xl"></iconify-icon>
+            </button>
+            
+            <h3 class="text-2xl font-semibold mb-2">Upload Your Photo</h3>
+            <p class="text-sub text-sm mb-6">Share your Emerald Valley moments with our community</p>
+            
+            <div class="space-y-4">
+                <!-- Drop Zone -->
+                <div class="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-mint transition-colors cursor-pointer">
+                    <iconify-icon icon="mdi:cloud-upload" class="text-4xl text-sub mb-2"></iconify-icon>
+                    <p class="text-sm text-sub">Drag and drop your photo here<br>or click to browse</p>
+                    <p class="text-xs text-sub mt-2">JPG, PNG up to 10MB</p>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Category</label>
+                    <select class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                        <option>Landscapes</option>
+                        <option>Wildlife</option>
+                        <option>Activities</option>
+                        <option>Seasons</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Caption</label>
+                    <input type="text" placeholder="Describe your photo..." class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Location</label>
+                    <input type="text" placeholder="Where was this taken?" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                </div>
+                
+                <button class="btn-primary w-full py-3 text-sm rounded glow-mint-hover">
+                    Upload Photo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl hover:text-mint transition-colors z-10">
+            <iconify-icon icon="mdi:close"></iconify-icon>
+        </button>
+        <button onclick="prevImage()" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-mint transition-colors">
+            <iconify-icon icon="mdi:chevron-left"></iconify-icon>
+        </button>
+        <button onclick="nextImage()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-mint transition-colors">
+            <iconify-icon icon="mdi:chevron-right"></iconify-icon>
+        </button>
+        <img id="lightboxImage" src="" alt="" class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg">
+    </div>
+
+    <script>
+        // Data
+        const galleryImages = [
+            { id: 1, src: 'https://picsum.photos/seed/valley-gallery1/1200/800', category: 'landscapes', author: 'John D.', date: 'Dec 10, 2024', location: 'Summit Peak' },
+            { id: 2, src: 'https://picsum.photos/seed/valley-gallery2/600/400', category: 'wildlife', author: 'Sarah M.', date: 'Dec 8, 2024', location: 'Forest Trail' },
+            { id: 3, src: 'https://picsum.photos/seed/valley-gallery3/600/400', category: 'activities', author: 'Mike R.', date: 'Dec 5, 2024', location: 'Crystal Lake' },
+            { id: 4, src: 'https://picsum.photos/seed/valley-gallery4/600/400', category: 'seasons', author: 'Emma L.', date: 'Dec 1, 2024', location: 'Valley View' },
+            { id: 5, src: 'https://picsum.photos/seed/valley-gallery5/600/400', category: 'landscapes', author: 'David K.', date: 'Nov 28, 2024', location: 'Waterfall Path' },
+            { id: 6, src: 'https://picsum.photos/seed/valley-gallery6/600/400', category: 'wildlife', author: 'Lisa T.', date: 'Nov 25, 2024', location: 'Meadow Loop' },
+            { id: 7, src: 'https://picsum.photos/seed/valley-gallery7/600/400', category: 'activities', author: 'Chris P.', date: 'Nov 20, 2024', location: 'Base Camp' }
+        ];
+
+        const articles = [
+            { id: 1, title: 'Top 10 Sunrise Spots in Emerald Valley', excerpt: 'Wake up early and catch these breathtaking sunrise views that will leave you speechless.', category: 'guides', author: 'Alex Chen', date: 'Dec 12, 2024', readTime: '8 min', views: '5.2k', image: 'https://picsum.photos/seed/article1/600/400' },
+            { id: 2, title: 'Wildlife Photography Tips for Beginners', excerpt: 'Essential techniques for capturing stunning wildlife photos in their natural habitat.', category: 'wildlife', author: 'Maria Santos', date: 'Dec 10, 2024', readTime: '6 min', views: '3.8k', image: 'https://picsum.photos/seed/article2/600/400' },
+            { id: 3, title: 'The Ancient Trails: A Historical Journey', excerpt: 'Follow the paths walked by indigenous communities for thousands of years.', category: 'history', author: 'James Walker', date: 'Dec 8, 2024', readTime: '12 min', views: '4.1k', image: 'https://picsum.photos/seed/article3/600/400' },
+            { id: 4, title: 'Best Family-Friendly Hiking Routes', excerpt: 'Discover easy trails perfect for hikers of all ages and experience levels.', category: 'hiking', author: 'Emily Park', date: 'Dec 5, 2024', readTime: '7 min', views: '6.3k', image: 'https://picsum.photos/seed/article4/600/400' },
+            { id: 5, title: 'Local Culture: Festivals & Traditions', excerpt: 'Experience the rich cultural heritage through annual celebrations and events.', category: 'culture', author: 'David Kim', date: 'Dec 3, 2024', readTime: '9 min', views: '2.9k', image: 'https://picsum.photos/seed/article5/600/400' },
+            { id: 6, title: 'Winter Camping Essentials Guide', excerpt: 'Everything you need to know for a safe and comfortable winter camping experience.', category: 'guides', author: 'Rachel Green', date: 'Dec 1, 2024', readTime: '10 min', views: '4.7k', image: 'https://picsum.photos/seed/article6/600/400' }
+        ];
+
+        const packages = [
+            {
+                id: 1,
+                name: 'Essential Explorer',
+                duration: '3 Days / 2 Nights',
+                price: 299,
+                rating: 4.7,
+                reviews: 234,
+                highlights: ['Guided valley tour', 'Sunrise hike', 'Lake kayaking', 'Traditional dinner'],
+                accommodation: 'Mountain Lodge',
+                image: 'https://picsum.photos/seed/package1/600/400',
+                featured: false
+            },
+            {
+                id: 2,
+                name: 'Adventure Seeker',
+                duration: '5 Days / 4 Nights',
+                price: 599,
+                rating: 4.9,
+                reviews: 412,
+                highlights: ['Summit expedition', 'Wildlife safari', 'Rock climbing', 'Forest canopy walk', 'Stargazing camp'],
+                accommodation: 'Luxury Tent Camp',
+                image: 'https://picsum.photos/seed/package2/600/400',
+                featured: true
+            },
+            {
+                id: 3,
+                name: 'Ultimate Experience',
+                duration: '7 Days / 6 Nights',
+                price: 999,
+                rating: 4.9,
+                reviews: 189,
+                highlights: ['All Adventure activities', 'Helicopter tour', 'Private guide', 'Spa treatment', 'Photography workshop'],
+                accommodation: 'Premium Resort',
+                image: 'https://picsum.photos/seed/package3/600/400',
+                featured: false
+            }
+        ];
+
+        const reviews = [
+            { id: 1, author: 'Jennifer M.', location: 'New York, USA', rating: 5, date: 'Dec 14, 2024', text: 'Absolutely breathtaking! The Adventure Seeker package exceeded all our expectations. Our guide was incredibly knowledgeable and the landscapes were out of this world.', avatar: 'https://picsum.photos/seed/review1/100/100' },
+            { id: 2, author: 'Thomas K.', location: 'London, UK', rating: 5, date: 'Dec 12, 2024', text: 'Perfect family vacation. The trails were well-marked, facilities were clean, and the staff was helpful. Our kids still talk about the wildlife they saw!', avatar: 'https://picsum.photos/seed/review2/100/100' },
+            { id: 3, author: 'Yuki S.', location: 'Tokyo, Japan', rating: 4, date: 'Dec 10, 2024', text: 'A must-visit destination for nature lovers. The stargazing experience was unforgettable. Only wish we had booked a longer stay!', avatar: 'https://picsum.photos/seed/review3/100/100' }
+        ];
+
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader
+        window.addEventListener('load', () => {
+            gsap.to('.preloader', {
+                yPercent: -100,
+                duration: 1,
+                ease: 'power4.inOut',
+                delay: 0.5,
+                onComplete: () => {
+                    document.querySelector('.preloader').style.display = 'none';
+                }
+            });
+
+            // Hero animations
+            gsap.from('.hero-label', { opacity: 0, y: 30, duration: 1, delay: 1 });
+            gsap.from('.hero-title span', { opacity: 0, y: 50, duration: 1, stagger: 0.2, delay: 1.2 });
+            gsap.from('.hero-desc', { opacity: 0, y: 30, duration: 1, delay: 1.6 });
+            gsap.from('.hero-cta', { opacity: 0, y: 30, duration: 1, delay: 1.8 });
+        });
+
+        // Scroll Reveal
+        document.querySelectorAll('.reveal').forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 90%',
+                        end: 'bottom 10%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // Populate Gallery
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('galleryGrid');
+            const filtered = filter === 'all' ? galleryImages : galleryImages.filter(img => img.category === filter);
+            
+            grid.innerHTML = filtered.map((img, index) => `
+                <div class="gallery-item relative overflow-hidden rounded-lg cursor-pointer group ${index === 0 ? 'md:row-span-2' : ''}" 
+                     onclick="openLightbox(${img.id})">
+                    <img src="${img.src}" alt="Gallery image" 
+                         class="w-full h-full object-cover img-hover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <p class="text-xs text-mint uppercase tracking-wide mb-1">${img.location}</p>
+                            <p class="text-sm">by ${img.author} · ${img.date}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Gallery Filter
+        document.querySelectorAll('.gallery-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.gallery-filter').forEach(b => {
+                    b.classList.remove('active', 'border-mint', 'text-mint');
+                    b.classList.add('border-border', 'text-sub');
+                });
+                btn.classList.add('active', 'border-mint', 'text-mint');
+                btn.classList.remove('border-border', 'text-sub');
+                renderGallery(btn.dataset.category);
+            });
+        });
+
+        // Lightbox
+        let currentImageIndex = 0;
+        const lightboxImages = galleryImages;
+
+        function openLightbox(id) {
+            currentImageIndex = lightboxImages.findIndex(img => img.id === id);
+            updateLightboxImage();
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function updateLightboxImage() {
+            document.getElementById('lightboxImage').src = lightboxImages[currentImageIndex].src;
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % lightboxImages.length;
+            updateLightboxImage();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + lightboxImages.length) % lightboxImages.length;
+            updateLightboxImage();
+        }
+
+        // Populate Articles
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = articles.map(article => `
+                <article class="border border-border rounded-xl overflow-hidden card-hover cursor-pointer group">
+                    <div class="aspect-video overflow-hidden">
+                        <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover img-hover">
+                    </div>
+                    <div class="p-6">
+                        <span class="category-tag mb-3 inline-block">${article.category}</span>
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-mint transition-colors">${article.title}</h3>
+                        <p class="text-sm text-sub mb-4 line-clamp-2">${article.excerpt}</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-sub">${article.author}</span>
+                                <span class="text-xs text-sub">·</span>
+                                <span class="text-xs text-sub">${article.date}</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-sub">
+                                <iconify-icon icon="mdi:clock-outline" class="text-sm"></iconify-icon>
+                                <span class="text-xs">${article.readTime}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-4 pt-4 border-t border-border">
+                            <button class="flex items-center gap-1 text-sub hover:text-mint transition-colors">
+                                <iconify-icon icon="mdi:share-variant"></iconify-icon>
+                                <span class="text-xs">Share</span>
+                            </button>
+                            <button class="flex items-center gap-1 text-sub hover:text-mint transition-colors">
+                                <iconify-icon icon="mdi:bookmark-outline"></iconify-icon>
+                                <span class="text-xs">Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Populate Packages
+        function renderPackages() {
+            const grid = document.getElementById('packagesGrid');
+            grid.innerHTML = packages.map(pkg => `
+                <div class="border ${pkg.featured ? 'border-mint' : 'border-border'} rounded-xl overflow-hidden card-hover relative ${pkg.featured ? 'bg-void/50' : ''}">
+                    ${pkg.featured ? '<div class="absolute top-4 right-4 bg-mint text-void text-xs font-semibold px-3 py-1 rounded">Most Popular</div>' : ''}
+                    <div class="aspect-video overflow-hidden">
+                        <img src="${pkg.image}" alt="${pkg.name}" class="w-full h-full object-cover img-hover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="flex items-center gap-1">
+                                ${Array(5).fill().map((_, i) => `
+                                    <iconify-icon icon="mdi:star${i < Math.floor(pkg.rating) ? '' : i < pkg.rating ? '-half-full' : '-outline'}" 
+                                                  class="${i < pkg.rating ? 'star-filled' : 'star-empty'} text-sm"></iconify-icon>
+                                `).join('')}
+                            </div>
+                            <span class="text-xs text-sub">${pkg.rating} (${pkg.reviews} reviews)</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-1">${pkg.name}</h3>
+                        <p class="text-sm text-sub mb-4">${pkg.duration}</p>
+                        <ul class="space-y-2 mb-6">
+                            ${pkg.highlights.map(h => `
+                                <li class="flex items-center gap-2 text-sm text-sub">
+                                    <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                    ${h}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="flex items-center justify-between pt-4 border-t border-border">
+                            <div>
+                                <span class="text-2xl font-semibold text-mint">$${pkg.price}</span>
+                                <span class="text-xs text-sub"> / person</span>
+                            </div>
+                            <button class="btn-primary px-6 py-2 text-xs rounded">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Populate Reviews
+        function renderReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            grid.innerHTML = reviews.map(review => `
+                <div class="border border-border rounded-xl p-6 card-hover">
+                    <div class="flex items-center gap-2 mb-4">
+                        ${Array(5).fill().map((_, i) => `
+                            <iconify-icon icon="mdi:star${i < review.rating ? '' : '-outline'}" 
+                                          class="${i < review.rating ? 'star-filled' : 'star-empty'}"></iconify-icon>
+                        `).join('')}
+                    </div>
+                    <p class="text-sub leading-relaxed mb-6">"${review.text}"</p>
+                    <div class="flex items-center gap-3">
+                        <img src="${review.avatar}" alt="${review.author}" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <p class="text-sm font-medium">${review.author}</p>
+                            <p class="text-xs text-sub">${review.location} · ${review.date}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Calendar
+        let currentDate = new Date();
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('currentMonth');
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            monthYear.textContent = `${months[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            
+            const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+            let html = dayNames.map(d => `<div class="text-xs text-sub py-2">${d}</div>`).join('');
+            
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div></div>';
+            }
+            
+            // Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const isPast = date < today && date.toDateString() !== today.toDateString();
+                const isToday = date.toDateString() === today.toDateString();
+                const availability = Math.random();
+                let bgClass = 'bg-mint/20';
+                let textClass = 'text-mint';
+                
+                if (isPast) {
+                    bgClass = 'bg-transparent';
+                    textClass = 'text-sub/30';
+                } else if (availability < 0.2) {
+                    bgClass = 'bg-red-500/20';
+                    textClass = 'text-red-400';
+                } else if (availability < 0.5) {
+                    bgClass = 'bg-sub/20';
+                    textClass = 'text-sub';
+                }
+                
+                html += `
+                    <div class="py-2 rounded cursor-pointer hover:ring-1 hover:ring-mint transition-all ${bgClass} ${textClass} ${isToday ? 'ring-2 ring-mint' : ''}">
+                        ${day}
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Modals
+        function openAuthModal(type) {
+            document.getElementById('authModal').classList.add('active');
+            if (type === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function toggleAuthForm() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+        }
+
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+        }
+
+        // Mobile Menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+        });
+
+        // Form Submissions
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Booking request submitted! We will contact you shortly.');
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message sent! We will get back to you soon.');
+        });
+
+        // Search and Filter
+        document.getElementById('contentSearch').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('#articlesGrid article').forEach(article => {
+                const title = article.querySelector('h3').textContent.toLowerCase();
+                article.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        document.getElementById('contentFilter').addEventListener('change', (e) => {
+            const category = e.target.value;
+            // In a real app, this would filter articles from a database
+            console.log('Filter by:', category);
+        });
+
+        // Close modals on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAuthModal();
+                closeUploadModal();
+                closeLightbox();
+            }
+        });
+
+        // Initialize
+        renderGallery();
+        renderArticles();
+        renderPackages();
+        renderReviews();
+        renderCalendar();
+
+        // Stats Animation
+        function animateStats() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = stat.textContent;
+                if (target.includes('m') || target.includes('km') || target.includes('+')) {
+                    return; // Skip complex units
+                }
+                const num = parseInt(target);
+                if (!isNaN(num)) {
+                    gsap.from(stat, {
+                        textContent: 0,
+                        duration: 2,
+                        ease: 'power1.out',
+                        snap: { textContent: 1 },
+                        scrollTrigger: {
+                            trigger: stat,
+                            start: 'top 90%'
+                        }
+                    });
+                }
+            });
+        }
+
+        animateStats();
+    </script>
+</body>
+</html>

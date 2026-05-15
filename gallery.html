@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore stunning photos of Emerald Valley. User-submitted galleries of landscapes, wildlife, and adventures.">
+    <title>Photo Gallery | Emerald Valley</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#010409',
+                        panel: '#0d1117',
+                        sky: '#38bdf8',
+                        'sky-dark': '#0ea5e9',
+                        leaf: '#4ade80',
+                        'leaf-dark': '#22c55e',
+                        border: 'rgba(56,189,248,0.15)',
+                        'border-strong': 'rgba(56,189,248,0.3)',
+                        sub: '#8b949e'                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-0.04em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #010409;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #010409;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(56,189,248,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(56,189,248,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Gradient Overlays */
+        .hero-gradient {
+            background: linear-gradient(to top, #010409, rgba(1,4,9,0.6), transparent);
+        }
+        
+        .radial-gradient {
+            background: radial-gradient(ellipse at center, rgba(56,189,248,0.08), transparent 70%);
+        }
+        
+        /* Masonry Grid */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 16px;
+        }
+        
+        @media (min-width: 640px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+        
+        @media (min-width: 1280px) {
+            .masonry-grid {
+                column-count: 4;
+            }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+        }
+        
+        /* Card Hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+        
+        .card-hover:hover .card-overlay {
+            opacity: 1;
+        }
+        
+        .card-hover:hover .card-image {
+            transform: scale(1.05);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(56,189,248,0.3);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,0.2), transparent);
+        }
+        
+        /* Category Tag */
+        .category-tag {
+            background: rgba(56,189,248,0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56,189,248,0.2);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Filter Active State */
+        .filter-btn.active {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            border-color: transparent;
+        }
+        
+        /* Nav Link */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #0d1117 25%, #161 50%, #0d1117 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="w-10 h-10 rounded-full border-2 border-mint border-t-transparent animate-spin"></div>
+        <span class="text-xs text-sub uppercase tracking-widest">Loading Gallery...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-mint flex items-center justify-center">
+                    <iconify-icon icon="mdi:mountain" class="text-void text-lg"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-wide uppercase">Emerald Valley</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Overview</a>
+                <a href="gallery.html" class="nav-link active text-xs font-semibold uppercase tracking-wide text-mint">Gallery</a>
+                <a href="explore.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Explore</a>
+                <a href="packages.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Packages</a>
+                <a href="contact.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Contact</a>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="openUploadModal()" class="btn-secondary px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded flex items-center gap-2">
+                    <iconify-icon icon="mdi:cloud-upload"></iconify-icon>
+                    Upload
+                </button>
+                <a href="packages.html" class="btn-primary px-5 py-2 text-xs rounded">
+                    Book Now
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">
+                <iconify-icon icon="mdi:menu"></iconify-icon>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-panel border-t border-border">
+            <div class="px-6 py-4 flex flex-col gap-4">
+                <a href="index.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Overview</a>
+                <a href="gallery.html" class="text-sm font-medium text-mint">Gallery</a>
+                <a href="explore.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Explore</a>
+                <a href="packages.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Packages</a>
+                <a href="contact.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Contact</a>
+                <div class="divider my-2"></div>
+                <button onclick="openUploadModal()" class="btn-secondary px-5 py-3 text-sm font-semibold rounded">Upload Photo</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://picsum.photos/seed/gallery-hero/1920/600" alt="Background" class="w-full h-full object-cover grayscale">
+            <div class="hero-gradient absolute inset-0"></div>
+        </div>
+        <div class="radial-gradient absolute inset-0"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-full mb-6">
+                <iconify-icon icon="mdi:camera" class="text-mint"></iconify-icon>
+                <span class="text-xs text-sub uppercase tracking-widest">Community Gallery</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-semibold tracking-tightest mb-4">
+                <span class="text-white">VISUAL</span>
+                <span class="bg-gradient-to-r from-white to-mint bg-clip-text text-transparent"> STORIES</span>
+            </h1>
+            
+            <p class="text-sub text-lg max-w-2xl mx-auto mb-8">
+                Explore breathtaking moments captured by visitors. Share your own perspective and become part of the Emerald Valley story.
+            </p>
+            
+            <!-- Stats -->
+            <div class="flex flex-wrap justify-center gap-8 text-sm">
+                <div>
+                    <span class="text-2xl font-bold text-mint">2,847</span>
+                    <span class="text-sub ml-1">Photos</span>
+                </div>
+                <div>
+                    <span class="text-2xl font-bold text-mint">342</span>
+                    <span class="text-sub ml-1">Contributors</span>
+                </div>
+                <div>
+                    <span class="text-2xl font-bold text-mint">48</span>
+                    <span class="text-sub ml-1">Countries</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Controls -->
+    <section class="sticky top-16 z-40 bg-void/95 backdrop-blur-xl border-y border-border py-4">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-btn active px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded transition-all" data-category="all">
+                        All Photos
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub hover:border-mint hover:text-mint transition-all" data-category="landscapes">
+                        Landscapes
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub hover:border-mint hover:text-mint transition-all" data-category="wildlife">
+                        Wildlife
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub hover:border-mint hover:text-mint transition-all" data-category="activities">
+                        Activities
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub hover:border-mint hover:text-mint transition-all" data-category="seasons">
+                        Seasons
+                    </button>
+                </div>
+                
+                <!-- Sort & View -->
+                <div class="flex items-center gap-4">
+                    <select id="sortSelect" class="bg-panel border border-border rounded px-3 py-2 text-xs focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                    
+                    <div class="hidden md:flex items-center gap-2 border border-border rounded p-1">
+                        <button id="viewGrid" class="p-2 text-mint">
+                            <iconify-icon icon="mdi:view-grid"></iconify-icon>
+                        </button>
+                        <button id="viewList" class="p-2 text-sub hover:text-mint transition-colors">
+                            <iconify-icon icon="mdi:view-list"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Gallery -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Featured Photo -->
+        <div class="reveal mb-12">
+            <div class="relative overflow-hidden rounded-xl border border-border group cursor-pointer" onclick="openLightbox(0)">
+                <img src="https://picsum.photos/seed/featured-gallery/1600/700" alt="Featured Photo" 
+                     class="w-full h-[300px] md:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent"></div>
+                <div class="absolute top-4 left-4">
+                    <span class="category-tag">Featured Photo</span>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 class="text-xl font-semibold mb-2">Sunrise at Emerald Peak</h3>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <img src="https://picsum.photos/seed/photographer1/100/100" alt="Photographer" class="w-8 h-8 rounded-full object-cover">
+                            <span class="text-sm">Marcus Chen</span>
+                        </div>
+                        <span class="text-sub text-sm">Dec 15, 2024</span>
+                        <span class="text-sub text-sm">•</span>
+                        <span class="text-sub text-sm flex items-center gap-1">
+                            <iconify-icon icon="mdi:heart"></iconify-icon> 1.2k
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Masonry Grid -->
+        <div class="masonry-grid" id="galleryGrid">
+            <!-- Items populated by JS -->
+        </div>
+        
+        <!-- Load More -->
+        <div class="text-center mt-12">
+            <button id="loadMoreBtn" class="btn-secondary px-8 py-4 text-xs font-semibold uppercase tracking-wide rounded flex items-center gap-2 mx-auto">
+                <iconify-icon icon="mdi:refresh"></iconify-icon>
+                Load More Photos
+            </button>
+            <p class="text-xs text-sub mt-4">Showing <span id="photoCount">12</span> of 2,847 photos</p>
+        </div>
+    </main>
+
+    <!-- Upload CTA Section -->
+    <section class="py-20 bg-panel border-y border-border">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <iconify-icon icon="mdi:camera-enhance" class="text-mint text-5xl mb-6"></iconify-icon>
+            <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
+                Share Your Perspective
+            </h2>
+            <p class="text-sub mb-8 max-w-xl mx-auto">
+                Captured a magical moment in Emerald Valley? Share your photos with our community and inspire fellow travelers.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="openUploadModal()" class="btn-primary px-8 py-4 text-sm rounded glow-mint-hover flex items-center justify-center gap-2">
+                    <iconify-icon icon="mdi:cloud-upload"></iconify-icon>
+                    Upload Your Photos
+                </button>
+                <a href="#" class="btn-secondary px-8 py-4 text-sm rounded">
+                    Submission Guidelines
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-border py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-mint flex items-center justify-center">
+                            <iconify-icon icon="mdi:mountain" class="text-void text-xl"></iconify-icon>
+                        </div>
+                        <span class="text-lg font-semibold tracking-wide">Emerald Valley</span>
+                    </div>
+                    <p class="text-sm text-sub leading-relaxed">
+                        A UNESCO World Heritage Site offering pristine wilderness and unforgettable adventures.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="index.html" class="hover:text-mint transition-colors">Valley Overview</a></li>
+                        <li><a href="gallery.html" class="text-mint">Photo Gallery</a></li>
+                        <li><a href="explore.html" class="hover:text-mint transition-colors">Travel Guides</a></li>
+                        <li><a href="packages.html" class="hover:text-mint transition-colors">Packages</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Trail Maps</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Wildlife Guide</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Safety Guidelines</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Connect -->
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:instagram" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:facebook" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:twitter" class="text-lg"></iconify-icon>
+                        </a>
+                    </div>
+                    <p class="text-xs text-sub">Tag us with #EmeraldValley</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="divider mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-sub">
+                    © 2024 Emerald Valley Tourism Board. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-xs text-sub">
+                    <a href="#" class="hover:text-mint transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-mint transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="bg-panel border border-border rounded-xl w-full max-w-lg mx-4 relative overflow-hidden">
+            <!-- Header -->
+            <div class="p-6 border-b border-border flex items-center justify-between">
+                <h3 class="text-xl font-semibold">Upload Photo</h3>
+                <button onclick="closeUploadModal()" class="text-sub hover:text-white transition-colors">
+                    <iconify-icon icon="mdi:close" class="text-xl"></iconify-icon>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 space-y-6">
+                <!-- Drop Zone -->
+                <div id="dropZone" class="border-2 border-dashed border-border rounded-lg p-10 text-center hover:border-mint transition-colors cursor-pointer">
+                    <iconify-icon icon="mdi:cloud-upload" class="text-5xl text-sub mb-4"></iconify-icon>
+                    <p class="text-sm text-sub mb-2">Drag and drop your photo here</p>
+                    <p class="text-xs text-sub mb-4">or</p>
+                    <label class="btn-secondary px-6 py-2 text-xs rounded cursor-pointer inline-block">
+                        Browse Files
+                        <input type="file" accept="image/*" class="hidden" id="fileInput">
+                    </label>
+                    <p class="text-xs text-sub mt-4">JPG, PNG up to 10MB</p>
+                </div>
+                
+                <!-- Preview -->
+                <div id="previewContainer" class="hidden">
+                    <div class="relative rounded-lg overflow-hidden">
+                        <img id="previewImage" src="" alt="Preview" class="w-full h-48 object-cover">
+                        <button onclick="clearPreview()" class="absolute top-2 right-2 bg-void/80 rounded-full p-1 text-white hover:text-red-400 transition-colors">
+                            <iconify-icon icon="mdi:close"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Form Fields -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Category *</label>
+                        <select class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                            <option value="">Select category</option>
+                            <option value="landscapes">Landscapes</option>
+                            <option value="wildlife">Wildlife</option>
+                            <option value="activities">Activities</option>
+                            <option value="seasons">Seasons</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Title *</label>
+                        <input type="text" placeholder="Give your photo a title..." class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Location</label>
+                        <input type="text" placeholder="Where was this taken?" class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Description</label>
+                        <textarea rows="3" placeholder="Tell us about this moment..." class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none resize-none"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Terms -->
+                <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" class="mt-1 accent-mint">
+                    <span class="text-xs text-sub">I confirm this is my original work and I agree to the <a href="#" class="text-mint hover:underline">submission guidelines</a>.</span>
+                </label>
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-6 border-t border-border bg-void/50">
+                <button onclick="submitPhoto()" class="btn-primary w-full py-4 text-sm rounded glow-mint-hover flex items-center justify-center gap-2">
+                    <iconify-icon icon="mdi:upload"></iconify-icon>
+                    Submit Photo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <!-- Close -->
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl hover:text-mint transition-colors z-10">
+            <iconify-icon icon="mdi:close"></iconify-icon>
+        </button>
+        
+        <!-- Navigation -->
+        <button onclick="prevImage()" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-mint transition-colors z-10">
+            <iconify-icon icon="mdi:chevron-left"></iconify-icon>
+        </button>
+        <button onclick="nextImage()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-mint transition-colors z-10">
+            <iconify-icon icon="mdi:chevron-right"></iconify-icon>
+        </button>
+        
+        <!-- Image Container -->
+        <div class="flex items-center justify-center w-full h-full p-4 md:p-16">
+            <img id="lightboxImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+        </div>
+        
+        <!-- Info Bar -->
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-void to-transparent p-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img id="lightboxAuthorAvatar" src="" alt="Author" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <p id="lightboxTitle" class="font-semibold"></p>
+                            <p id="lightboxAuthor" class="text-sm text-sub"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button class="flex items-center gap-2 text-sub hover:text-mint transition-colors">
+                            <iconify-icon icon="mdi:heart-outline"></iconify-icon>
+                            <span id="lightboxLikes"></span>
+                        </button>
+                        <button class="flex items-center gap-2 text-sub hover:text-mint transition-colors">
+                            <iconify-icon icon="mdi:share-variant"></iconify-icon>
+                            <span class="hidden md:inline">Share</span>
+                        </button>
+                        <button class="flex items-center gap-2 text-sub hover:text-mint transition-colors">
+                            <iconify-icon icon="mdi:download"></iconify-icon>
+                            <span class="hidden md:inline">Download</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Photo Data
+        const galleryData = [
+            { id: 1, src: 'https://picsum.photos/seed/gal1/800/1200', category: 'landscapes', title: 'Morning Mist Valley', author: 'Sarah M.', avatar: 'https://picsum.photos/seed/av1/100/100', date: 'Dec 15, 2024', likes: 842, location: 'North Ridge' },
+            { id: 2, src: 'https://picsum.photos/seed/gal2/800/600', category: 'wildlife', title: 'Deer at Dawn', author: 'John D.', avatar: 'https://picsum.photos/seed/av2/100/100', date: 'Dec 14, 2024', likes: 654, location: 'Forest Trail' },
+            { id: 3, src: 'https://picsum.photos/seed/gal3/800/800', category: 'activities', title: 'Summit Victory', author: 'Emma L.', avatar: 'https://picsum.photos/seed/av3/100/100', date: 'Dec 13, 2024', likes: 1.2, location: 'Emerald Peak' },
+            { id: 4, src: 'https://picsum.photos/seed/gal4/800/1000', category: 'seasons', title: 'Winter Silence', author: 'Mike R.', avatar: 'https://picsum.photos/seed/av4/100/100', date: 'Dec 12, 2024', likes: 923, location: 'Frozen Lake' },
+            { id: 5, src: 'https://picsum.photos/seed/gal5/800/600', category: 'landscapes', title: 'Golden Hour', author: 'Lisa T.', avatar: 'https://picsum.photos/seed/av5/100/100', date: 'Dec 11, 2024', likes: 756, location: 'Sunset Point' },
+            { id: 6, src: 'https://picsum.photos/seed/gal6/800/1100', category: 'wildlife', title: 'Eagle Soaring', author: 'David K.', avatar: 'https://picsum.photos/seed/av6/100/100', date: 'Dec 10, 2024', likes: 1.5, location: 'Cliff Edge' },
+            { id: 7, src: 'https://picsum.photos/seed/gal7/800/700', category: 'activities', title: 'Kayak Adventure', author: 'Rachel G.', avatar: 'https://picsum.photos/seed/av7/100/100', date: 'Dec 9, 2024', likes: 432, location: 'Crystal Lake' },
+            { id: 8, src: 'https://picsum.photos/seed/gal8/800/900', category: 'landscapes', title: 'Valley Panorama', author: 'Chris P.', avatar: 'https://picsum.photos/seed/av8/100/100', date: 'Dec 8, 2024', likes: 1.8, location: 'Viewpoint Trail' },
+            { id: 9, src: 'https://picsum.photos/seed/gal9/800/600', category: 'seasons', title: 'Spring Blooms', author: 'Anna W.', avatar: 'https://picsum.photos/seed/av9/100/100', date: 'Dec 7, 2024', likes: 567, location: 'Meadow Path' },
+            { id: 10, src: 'https://picsum.photos/seed/gal10/800/1200', category: 'wildlife', title: 'Bear Family', author: 'Tom H.', avatar: 'https://picsum.photos/seed/av10/100/100', date: 'Dec 6, 2024', likes: 2.1, location: 'Forest Edge' },
+            { id: 11, src: 'https://picsum.photos/seed/gal11/800/800', category: 'activities', title: 'Night Camping', author: 'Sophie B.', avatar: 'https://picsum.photos/seed/av11/100/100', date: 'Dec 5, 2024', likes: 789, location: 'Base Camp' },
+            { id: 12, src: 'https://picsum.photos/seed/gal12/800/700', category: 'landscapes', title: 'Waterfall Magic', author: 'James C.', avatar: 'https://picsum.photos/seed/av12/100/100', date: 'Dec 4, 2024', likes: 1.3, location: 'Hidden Falls' }
+        ];
+
+        let currentFilter = 'all';
+        let currentImageIndex = 0;
+        let filteredData = [...galleryData];
+
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader
+        window.addEventListener('load', () => {
+            gsap.to('.preloader', {
+                yPercent: -100,
+                duration: 0.8,
+                ease: 'power4.inOut',
+                delay: 0.3,
+                onComplete: () => {
+                    document.querySelector('.preloader').style.display = 'none';
+                }
+            });
+        });
+
+        // Render Gallery
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            filteredData = currentFilter === 'all' 
+                ? galleryData 
+                : galleryData.filter(item => item.category === currentFilter);
+            
+            grid.innerHTML = filteredData.map((item, index) => `
+                <div class="masonry-item reveal" style="animation-delay: ${index * 0.05}s">
+                    <div class="relative overflow-hidden rounded-xl border border-border card-hover cursor-pointer group" onclick="openLightbox(${index})">
+                        <img src="${item.src}" alt="${item.title}" class="card-image w-full object-cover transition-transform duration-500">
+                        <div class="card-overlay absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent opacity-0 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="category-tag">${item.category}</span>
+                                    <span class="text-xs text-sub">${item.location}</span>
+                                </div>
+                                <h3 class="font-semibold text-sm mb-1">${item.title}</h3>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <img src="${item.avatar}" alt="${item.author}" class="w-6 h-6 rounded-full object-cover">
+                                        <span class="text-xs text-sub">${item.author}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1 text-sub text-xs">
+                                        <iconify-icon icon="mdi:heart"></iconify-icon>
+                                        ${item.likes}${typeof item.likes === 'number' ? '' : 'k'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update photo count
+            document.getElementById('photoCount').textContent = filteredData.length;
+
+            // Reinitialize scroll animations
+            initScrollAnimations();
+        }
+
+        // Scroll Animations
+        function initScrollAnimations() {
+            document.querySelectorAll('.reveal').forEach(el => {
+                gsap.fromTo(el, 
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.6,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        }
+
+        // Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.category;
+                renderGallery();
+            });
+        });
+
+        // Lightbox
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightbox() {
+            const item = filteredData[currentImageIndex];
+            document.getElementById('lightboxImage').src = item.src;
+            document.getElementById('lightboxTitle').textContent = item.title;
+            document.getElementById('lightboxAuthor').textContent = `by ${item.author} · ${item.date}`;
+            document.getElementById('lightboxAuthorAvatar').src = item.avatar;
+            document.getElementById('lightboxLikes').textContent = item.likes + (typeof item.likes === 'number' ? '' : 'k');
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % filteredData.length;
+            updateLightbox();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + filteredData.length) % filteredData.length;
+            updateLightbox();
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        // Upload Modal
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // File Upload Preview
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('previewContainer').classList.remove('hidden');
+                    document.getElementById('dropZone').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function clearPreview() {
+            document.getElementById('previewImage').src = '';
+            document.getElementById('previewContainer').classList.add('hidden');
+            document.getElementById('dropZone').classList.remove('hidden');
+            document.getElementById('fileInput').value = '';
+        }
+
+        function submitPhoto() {
+            alert('Thank you! Your photo has been submitted for review.');
+            closeUploadModal();
+            clearPreview();
+        }
+
+        // Drag and Drop
+        const dropZone = document.getElementById('dropZone');
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-mint');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-mint');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-mint');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('previewContainer').classList.remove('hidden');
+                    document.getElementById('dropZone').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Mobile Menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Load More
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            // Simulate loading more photos
+            const btn = document.getElementById('loadMoreBtn');
+            btn.innerHTML = '<iconify-icon icon="mdi:loading" class="animate-spin"></iconify-icon> Loading...';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<iconify-icon icon="mdi:check"></iconify-icon> All Photos Loaded';
+                btn.disabled = true;
+                btn.classList.add('opacity-50');
+            }, 1500);
+        });
+
+        // Initialize
+        renderGallery();
+    </script>
+</body>
+</html>

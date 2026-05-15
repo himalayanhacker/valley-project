@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Emerald Valley - Get in touch with our team for bookings, inquiries, and support.">
+    <title>Contact Us | Emerald Valley</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#010409',
+                        panel: '#0d1117',
+                        sky: '#38bdf8',
+                        'sky-dark': '#0ea5e9',
+                        leaf: '#4ade80',
+                        'leaf-dark': '#22c55e',
+                        border: 'rgba(56,189,248,0.15)',
+                        'border-strong': 'rgba(56,189,248,0.3)',
+                        sub: '#8b949e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-0.04em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #030303;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #030303;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Gradient Overlays */
+        .hero-gradient {
+            background: linear-gradient(to top, #030303, rgba(3,3,3,0.6), transparent);
+        }
+        
+        .radial-gradient {
+            background: radial-gradient(ellipse at center, rgba(0,255,163,0.08), transparent 70%);
+        }
+        
+        /* Card Hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0,255,163,0.3);
+        }
+        
+        .card-hover:hover .card-image {
+            transform: scale(1.05);
+        }
+        
+        .card-hover:hover .card-title {
+            color: #38bdf8;
+        }
+        
+        /* Image Hover */
+        .img-hover {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .img-hover:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(56,189,248,0.3);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,0.2), transparent);
+        }
+        
+        /* Category Tag */
+        .category-tag {
+            background: rgba(56,189,248,0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56,189,248,0.2);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Nav Link */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Category Filter */
+        .category-filter {
+            transition: all 0.3s ease;
+        }
+        
+        .category-filter.active {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            border-color: transparent;
+        }
+        
+        /* Sticky Sidebar */
+        .sticky-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+        
+        /* Reading Time */
+        .reading-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #8b949e;
+        }
+        
+        /* Search Input Focus */
+        .search-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56,189,248,0.1);
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="w-10 h-10 rounded-full border-2 border-mint border-t-transparent animate-spin"></div>
+        <span class="text-xs text-sub uppercase tracking-widest">Loading Contact...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-mint flex items-center justify-center">
+                    <iconify-icon icon="mdi:mountain" class="text-void text-lg"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-wide uppercase">Emerald Valley</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Overview</a>
+                <a href="gallery.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Gallery</a>
+                <a href="explore.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Explore</a>
+                <a href="packages.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-mint transition-colors">Packages</a>
+                <a href="contact.html" class="nav-link active text-xs font-semibold uppercase tracking-wide text-mint">Contact</a>
+            </div>
+            
+            <!-- CTA Button -->
+            <div class="hidden md:flex items-center gap-4">
+                <a href="packages.html" class="btn-primary px-5 py-2 text-xs rounded">
+                    Book Now
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">
+                <iconify-icon icon="mdi:menu"></iconify-icon>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-panel border-t border-border">
+            <div class="px-6 py-4 flex flex-col gap-4">
+                <a href="index.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Overview</a>
+                <a href="gallery.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Gallery</a>
+                <a href="explore.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Explore</a>
+                <a href="packages.html" class="text-sm font-medium text-sub hover:text-mint transition-colors">Packages</a>
+                <a href="contact.html" class="text-sm font-medium text-mint">Contact</a>
+                <div class="divider my-2"></div>
+                <a href="packages.html" class="btn-primary px-5 py-3 text-sm text-center rounded">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://picsum.photos/seed/explore-hero/1920/600" alt="Background" class="w-full h-full object-cover grayscale">
+            <div class="hero-gradient absolute inset-0"></div>
+        </div>
+        <div class="radial-gradient absolute inset-0"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-full mb-6">
+                    <iconify-icon icon="mdi:message-outline" class="text-mint"></iconify-icon>
+                    <span class="text-xs text-sub uppercase tracking-widest">Get In Touch</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl font-semibold tracking-tightest mb-4">
+                    <span class="text-white">CONTACT</span>
+                    <span class="bg-gradient-to-r from-white to-mint bg-clip-text text-transparent"> US</span>
+                </h1>
+                
+                <p class="text-sub text-lg mb-8">
+                    Have questions about your trip? Need help planning your adventure? Our team is here to assist you every step of the way.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid lg:grid-cols-3 gap-10">
+            <!-- Contact Form -->
+            <div class="lg:col-span-2">
+                <div class="reveal border border-border rounded-xl p-8 bg-panel/30">
+                    <h2 class="text-2xl font-semibold mb-6">Send Us a Message</h2>
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">First Name</label>
+                                <input type="text" name="firstName" required 
+                                       class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Last Name</label>
+                                <input type="text" name="lastName" required 
+                                       class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email Address</label>
+                            <input type="email" name="email" required 
+                                   class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Phone Number</label>
+                            <input type="tel" name="phone" 
+                                   class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Subject</label>
+                            <select name="subject" required 
+                                    class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors">
+                                <option value="">Select a subject</option>
+                                <option value="booking">Booking Inquiry</option>
+                                <option value="custom">Custom Trip Request</option>
+                                <option value="support">Customer Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Message</label>
+                            <textarea name="message" rows="5" required 
+                                      class="w-full bg-void border border-border rounded-lg px-4 py-3 text-sm focus:border-mint focus:outline-none transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary px-8 py-3 text-sm rounded glow-mint-hover w-full md:w-auto">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Info Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="sticky-sidebar space-y-6">
+                    <!-- Contact Info -->
+                    <div class="reveal border border-border rounded-xl p-6 bg-panel/30">
+                        <h3 class="font-semibold mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:map-marker" class="text-mint text-xl mt-1"></iconify-icon>
+                                <div>
+                                    <p class="text-sm font-medium">Address</p>
+                                    <p class="text-sm text-sub">123 Valley Road, Emerald Valley, Mountain State 12345</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:phone" class="text-mint text-xl mt-1"></iconify-icon>
+                                <div>
+                                    <p class="text-sm font-medium">Phone</p>
+                                    <p class="text-sm text-sub">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:email" class="text-mint text-xl mt-1"></iconify-icon>
+                                <div>
+                                    <p class="text-sm font-medium">Email</p>
+                                    <p class="text-sm text-sub">info@emeraldvalley.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <iconify-icon icon="mdi:clock" class="text-mint text-xl mt-1"></iconify-icon>
+                                <div>
+                                    <p class="text-sm font-medium">Hours</p>
+                                    <p class="text-sm text-sub">Mon - Fri: 9AM - 6PM<br>Sat - Sun: 10AM - 4PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="reveal border border-border rounded-xl p-6 bg-panel/30">
+                        <h3 class="font-semibold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="packages.html" class="text-sm text-sub hover:text-mint transition-colors flex items-center gap-2"><iconify-icon icon="mdi:chevron-right"></iconify-icon> View Packages</a></li>
+                            <li><a href="explore.html" class="text-sm text-sub hover:text-mint transition-colors flex items-center gap-2"><iconify-icon icon="mdi:chevron-right"></iconify-icon> Travel Guides</a></li>
+                            <li><a href="gallery.html" class="text-sm text-sub hover:text-mint transition-colors flex items-center gap-2"><iconify-icon icon="mdi:chevron-right"></iconify-icon> Photo Gallery</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="reveal border border-border rounded-xl p-6 bg-panel/30">
+                        <h3 class="font-semibold mb-4">Follow Us</h3>
+                        <div class="flex gap-3">
+                            <a href="#" class="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-colors">
+                                <iconify-icon icon="mdi:facebook"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-colors">
+                                <iconify-icon icon="mdi:instagram"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-colors">
+                                <iconify-icon icon="mdi:twitter"></iconify-icon>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-colors">
+                                <iconify-icon icon="mdi:youtube"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-border py-16 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-mint flex items-center justify-center">
+                            <iconify-icon icon="mdi:mountain" class="text-void text-xl"></iconify-icon>
+                        </div>
+                        <span class="text-lg font-semibold tracking-wide">Emerald Valley</span>
+                    </div>
+                    <p class="text-sm text-sub leading-relaxed">
+                        A UNESCO World Heritage Site offering pristine wilderness and unforgettable adventures.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="index.html" class="hover:text-mint transition-colors">Valley Overview</a></li>
+                        <li><a href="gallery.html" class="hover:text-mint transition-colors">Photo Gallery</a></li>
+                        <li><a href="explore.html" class="hover:text-mint transition-colors">Stories & Guides</a></li>
+                        <li><a href="packages.html" class="hover:text-mint transition-colors">Packages</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Trail Maps</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Wildlife Guide</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Safety Guidelines</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Connect -->
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:instagram" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:facebook" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-mint hover:border-mint transition-all">
+                            <iconify-icon icon="mdi:twitter" class="text-lg"></iconify-icon>
+                        </a>
+                    </div>
+                    <p class="text-xs text-sub">Follow us for daily inspiration</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="divider mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-sub">
+                    © 2024 Emerald Valley Tourism Board. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-xs text-sub">
+                    <a href="#" class="hover:text-mint transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-mint transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader
+        window.addEventListener('load', () => {
+            gsap.to('.preloader', {
+                yPercent: -100,
+                duration: 0.8,
+                ease: 'power4.inOut',
+                delay: 0.3,
+                onComplete: () => {
+                    document.querySelector('.preloader').style.display = 'none';
+                }
+            });
+        });
+
+        // Scroll Animations
+        function initScrollAnimations() {
+            document.querySelectorAll('.reveal').forEach(el => {
+                gsap.fromTo(el, 
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.6,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 95%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        }
+
+        // Mobile Menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.innerHTML = '<iconify-icon icon="mdi:loading" class="animate-spin"></iconify-icon> Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                submitBtn.innerHTML = '<iconify-icon icon="mdi:check"></iconify-icon> Message Sent!';
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('bg-mint', 'text-void');
+                
+                // Reset form
+                setTimeout(() => {
+                    this.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.add('btn-primary');
+                    submitBtn.classList.remove('bg-mint', 'text-void');
+                }, 2000);
+            }, 1500);
+        });
+
+        // Initialize
+        initScrollAnimations();
+    </script>
+</body>
+</html>

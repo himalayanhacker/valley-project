@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adventure Seeker Package - 5 days of thrilling experiences in Emerald Valley. Summit expeditions, wildlife safaris, and stargazing camps.">
+    <meta name="keywords" content="Emerald Valley adventure, hiking package, wildlife safari, mountain expedition">
+    <title>Adventure Seeker Package | Emerald Valley</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#010409',
+                        panel: '#0d1117',
+                        sky: '#38bdf8',
+                        'sky-dark': '#0ea5e9',
+                        leaf: '#4ade80',
+                        'leaf-dark': '#22c55e',
+                        border: 'rgba(56,189,248,0.15)',
+                        'border-strong': 'rgba(56,189,248,0.3)',
+                        sub: '#8b949e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-0.04em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: #030303;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #030303;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .preloader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .preloader-progress {
+            height: 100%;
+            background: #00ffa3;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Grid Background */
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Gradient Overlays */
+        .hero-gradient {
+            background: linear-gradient(to top, #030303, rgba(3,3,3,0.5), transparent);
+        }
+        
+        .radial-gradient {
+            background: radial-gradient(ellipse at center, rgba(0,255,163,0.08), transparent 70%);
+        }
+        
+        /* Scan Line Animation */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00ffa3, transparent);
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        /* Glow Effects */
+        .glow-mint {
+            box-shadow: 0 0 20px rgba(0,255,163,0.3);
+        }
+        
+        .glow-mint-hover:hover {
+            box-shadow: 0 0 30px rgba(0,255,163,0.5);
+        }
+        
+        /* Card Hover */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(0,255,163,0.5);
+        }
+        
+        /* Image Hover */
+        .img-hover {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .img-hover:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(56,189,248,0.3);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+        
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,0.2), transparent);
+        }
+        
+        /* Category Tag */
+        .category-tag {
+            background: rgba(56,189,248,0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        
+        /* Timeline */
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #38bdf8, rgba(56,189,248,0.1));
+        }
+        
+        .timeline-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #010409;
+            border: 2px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: #38bdf8;
+            flex-shrink: 0;
+        }
+        
+        /* Accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 500px;
+        }
+        
+        /* Booking Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #080808;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ffa3;
+        }
+        
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Navigation Active */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #00ffa3;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Gallery Slider */
+        .gallery-slider {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .gallery-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .gallery-slide {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+        }
+        
+        /* Pricing Card */
+        .pricing-highlight {
+            position: relative;
+        }
+        
+        .pricing-highlight::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #00ffa3, #00b372);
+            border-radius: 14px;
+            z-index: -1;
+        }
+        
+        /* Floating Labels */
+        .float-label {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="w-12 h-12 rounded-full border-2 border-mint border-t-transparent animate-spin"></div>
+        <div class="preloader-bar">
+            <div class="preloader-progress" id="preloaderProgress"></div>
+        </div>
+        <span class="text-xs text-sub uppercase tracking-widest">Preparing your adventure...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-mint flex items-center justify-center">
+                    <iconify-icon icon="mdi:mountain" class="text-void text-lg"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-wide uppercase">Emerald Valley</span>
+            </a>
+            
+            <!-- Breadcrumb -->
+            <div class="hidden md:flex items-center gap-2 text-xs text-sub">
+                <a href="index.html" class="hover:text-mint transition-colors">Home</a>
+                <iconify-icon icon="mdi:chevron-right"></iconify-icon>
+                <a href="packages.html" class="hover:text-mint transition-colors">Packages</a>
+                <iconify-icon icon="mdi:chevron-right"></iconify-icon>
+                <span class="text-white">Adventure Seeker</span>
+            </div>
+            
+            <!-- CTA -->
+            <div class="flex items-center gap-4">
+                <button class="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-wide rounded hidden md:block">
+                    Save Package
+                </button>
+                <a href="#booking" class="btn-primary px-5 py-2 text-xs rounded glow-mint-hover">
+                    Book Now
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[70vh] flex items-end pb-16 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/adventure-hero/1920/1080" alt="Adventure Seeker Package" 
+                 class="w-full h-full object-cover grayscale contrast-125 opacity-50">
+            <div class="hero-gradient absolute inset-0"></div>
+            <div class="radial-gradient absolute inset-0"></div>
+        </div>
+        
+        <!-- Scan Line -->
+        <div class="scan-line"></div>
+        
+        <!-- Floating Badge -->
+        <div class="absolute top-24 right-8 float-label hidden lg:block">
+            <div class="bg-mint text-void px-4 py-2 rounded-lg font-semibold text-sm">
+                Most Popular
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="category-tag">5 Days / 4 Nights</span>
+                <span class="category-tag">All Skill Levels</span>
+                <span class="category-tag">Small Groups</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tightest mb-4">
+                <span class="text-white">ADVENTURE</span>
+                <span class="bg-gradient-to-r from-white to-mint bg-clip-text text-transparent"> SEEKER</span>
+            </h1>
+            
+            <p class="text-sub text-lg md:text-xl max-w-2xl mb-6">
+                Five days of heart-pounding adventure through Emerald Valley's most spectacular landscapes. From summit expeditions to stargazing camps.
+            </p>
+            
+            <!-- Quick Info -->
+            <div class="flex flex-wrap items-center gap-6 text-sm">
+                <div class="flex items-center gap-2">
+                    <iconify-icon icon="mdi:star" class="text-mint"></iconify-icon>
+                    <span class="font-semibold">4.9</span>
+                    <span class="text-sub">(412 reviews)</span>
+                </div>
+                <div class="flex items-center gap-2 text-sub">
+                    <iconify-icon icon="mdi:account-group"></iconify-icon>
+                    <span>Max 12 travelers</span>
+                </div>
+                <div class="flex items-center gap-2 text-sub">
+                    <iconify-icon icon="mdi:calendar"></iconify-icon>
+                    <span>Available year-round</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid lg:grid-cols-3 gap-10">
+            <!-- Content Column -->
+            <div class="lg:col-span-2 space-y-16">
+                
+                <!-- Overview -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Overview</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-6">
+                        The Ultimate Valley Experience
+                    </h2>
+                    
+                    <div class="prose prose-invert max-w-none text-sub leading-relaxed space-y-4">
+                        <p>
+                            The Adventure Seeker package is our most comprehensive exploration of Emerald Valley, designed for travelers who want to experience everything this remarkable destination has to offer. Over five unforgettable days, you'll traverse alpine meadows, navigate ancient forests, and stand atop peaks that offer panoramic views stretching for hundreds of kilometers.
+                        </p>
+                        <p>
+                            This carefully curated journey combines physical adventure with moments of serene beauty. You'll challenge yourself with guided summit expeditions, get up close with the valley's diverse wildlife, and end each day in comfort at our luxury tent camp, where gourmet meals and warm hospitality await.
+                        </p>
+                        <p>
+                            Whether you're an experienced adventurer or trying outdoor activities for the first time, our expert guides ensure every experience is safe, accessible, and truly memorable. Small group sizes mean personalized attention and the flexibility to adapt to your interests and abilities.
+                        </p>
+                    </div>
+                    
+                    <!-- Highlights Grid -->
+                    <div class="grid sm:grid-cols-2 gap-4 mt-8">
+                        <div class="p-5 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:mountain" class="text-mint text-2xl mb-3"></iconify-icon>
+                            <h4 class="font-semibold mb-1">Summit Expedition</h4>
+                            <p class="text-sm text-sub">Guided climb to Emerald Peak (3,200m) with professional mountaineers</p>
+                        </div>
+                        <div class="p-5 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:elephant" class="text-mint text-2xl mb-3"></iconify-icon>
+                            <h4 class="font-semibold mb-1">Wildlife Safari</h4>
+                            <p class="text-sm text-sub">Dawn expedition to spot bears, elk, and rare alpine species</p>
+                        </div>
+                        <div class="p-5 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:climbing" class="text-mint text-2xl mb-3"></iconify-icon>
+                            <h4 class="font-semibold mb-1">Rock Climbing</h4>
+                            <p class="text-sm text-sub">Beginner-friendly climbing on granite formations</p>
+                        </div>
+                        <div class="p-5 border border-border rounded-lg card-hover">
+                            <iconify-icon icon="mdi:telescope" class="text-mint text-2xl mb-3"></iconify-icon>
+                            <h4 class="font-semibold mb-1">Stargazing Camp</h4>
+                            <p class="text-sm text-sub">Night sky observation with astronomy experts</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Day by Day Itinerary -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Itinerary</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        Day by Day Journey
+                    </h2>
+                    
+                    <!-- Timeline -->
+                    <div class="space-y-8">
+                        <!-- Day 1 -->
+                        <div class="relative pl-12">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-dot absolute left-0">1</div>
+                            <div class="border border-border rounded-xl overflow-hidden">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="https://picsum.photos/seed/day1-itinerary/800/450" alt="Day 1" 
+                                         class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold">Arrival & Valley Orientation</h3>
+                                        <span class="text-xs text-sub">Morning - Evening</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-sub mb-4">
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Airport pickup and scenic drive to base camp
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Welcome lunch with local cuisine
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Equipment fitting and safety briefing
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Evening nature walk to waterfall viewpoint
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Group dinner and trip orientation
+                                        </li>
+                                    </ul>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">Easy</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">~3 km walking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 2 -->
+                        <div class="relative pl-12">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-dot absolute left-0">2</div>
+                            <div class="border border-border rounded-xl overflow-hidden">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="https://picsum.photos/seed/day2-itinerary/800/450" alt="Day 2" 
+                                         class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold">Summit Expedition Day</h3>
+                                        <span class="text-xs text-sub">Early Morning - Evening</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-sub mb-4">
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            4:00 AM departure for Emerald Peak summit
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Sunrise breakfast at treeline camp
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Technical climbing section with guides
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Summit celebration and photography
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Return to camp with optional glacier walk
+                                        </li>
+                                    </ul>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded border border-yellow-500/30">Moderate</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">~12 km hiking</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">1,200m elevation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 3 -->
+                        <div class="relative pl-12">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-dot absolute left-0">3</div>
+                            <div class="border border-border rounded-xl overflow-hidden">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="https://picsum.photos/seed/day3-itinerary/800/450" alt="Day 3" 
+                                         class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold">Wildlife Safari & Forest Canopy</h3>
+                                        <span class="text-xs text-sub">Dawn - Afternoon</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-sub mb-4">
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Dawn wildlife watching at observation points
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Expert-led tracking of bears and elk
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Picnic lunch by Crystal Lake
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Afternoon forest canopy walk (40m height)
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Evening rest and spa treatment
+                                        </li>
+                                    </ul>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">Easy</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">~6 km walking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 4 -->
+                        <div class="relative pl-12">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-dot absolute left-0">4</div>
+                            <div class="border border-border rounded-xl overflow-hidden">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="https://picsum.photos/seed/day4-itinerary/800/450" alt="Day 4" 
+                                         class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold">Rock Climbing & Stargazing</h3>
+                                        <span class="text-xs text-sub">Morning - Night</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-sub mb-4">
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Morning climbing session at Granite Walls
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            All levels welcome with professional instruction
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Lunch and afternoon at leisure
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Sunset dinner at Skyview Point
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Astronomy session with telescope (weather permitting)
+                                        </li>
+                                    </ul>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded border border-yellow-500/30">Moderate</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">~4 hours activities</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 5 -->
+                        <div class="relative pl-12">
+                            <div class="timeline-dot absolute left-0">5</div>
+                            <div class="border border-border rounded-xl overflow-hidden">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="https://picsum.photos/seed/day5-itinerary/800/450" alt="Day 5" 
+                                         class="w-full h-full object-cover img-hover grayscale hover:grayscale-0">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold">Departure Day</h3>
+                                        <span class="text-xs text-sub">Morning</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-sub mb-4">
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Optional sunrise hike (easy trail)
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Farewell breakfast
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Visit to Valley Heritage Center
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Souvenir shopping at local artisan market
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <iconify-icon icon="mdi:check-circle" class="text-mint"></iconify-icon>
+                                            Airport transfer (departure by 2 PM recommended)
+                                        </li>
+                                    </ul>
+                                    <div class="flex gap-2">
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">Easy</span>
+                                        <span class="px-3 py-1 text-xs bg-panel rounded border border-border">~2 km walking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- What's Included -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Inclusions</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        What's Included
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Included -->
+                        <div class="border border-border rounded-xl p-6">
+                            <div class="flex items-center gap-2 mb-4">
+                                <iconify-icon icon="mdi:check-circle" class="text-mint text-xl"></iconify-icon>
+                                <h3 class="font-semibold">Included</h3>
+                            </div>
+                            <ul class="space-y-3 text-sm text-sub">
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:sleep" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>4 nights luxury tented accommodation</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:food" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>All meals (breakfast, lunch, dinner, snacks)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:car" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>Airport transfers and all transportation</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:account-tie" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>Professional guide throughout (1:4 ratio)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:hiking" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>All climbing and safety equipment</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:camera" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>Professional photography package</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:medal" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>Summit certificate and souvenir gift</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:shield-check" class="text-mint mt-0.5"></iconify-icon>
+                                    <span>Travel insurance coverage</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Not Included -->
+                        <div class="border border-border rounded-xl p-6">
+                            <div class="flex items-center gap-2 mb-4">
+                                <iconify-icon icon="mdi:close-circle" class="text-red-400 text-xl"></iconify-icon>
+                                <h3 class="font-semibold">Not Included</h3>
+                            </div>
+                            <ul class="space-y-3 text-sm text-sub">
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:airplane" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>International flights</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:briefcase" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>Personal hiking gear (boots, clothing)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:glass-cocktail" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>Alcoholic beverages</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:wallet" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>Personal expenses and tips</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:spa" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>Premium spa treatments (available for extra cost)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <iconify-icon icon="mdi:helicopter" class="text-red-400 mt-0.5"></iconify-icon>
+                                    <span>Helicopter tour (upgrade available)</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-6 p-4 bg-panel rounded-lg border border-border">
+                                <p class="text-xs text-sub">
+                                    <iconify-icon icon="mdi:information" class="text-mint mr-1"></iconify-icon>
+                                    Gear rental available for boots, jackets, and backpacks at $50/day
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accommodation -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Accommodation</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        Your Home in the Valley
+                    </h2>
+                    
+                    <div class="border border-border rounded-xl overflow-hidden">
+                        <div class="grid md:grid-cols-2">
+                            <div class="grid grid-cols-2 gap-1 p-1">
+                                <img src="https://picsum.photos/seed/accommodation1/400/300" alt="Tent exterior" class="rounded w-full h-full object-cover">
+                                <img src="https://picsum.photos/seed/accommodation2/400/300" alt="Tent interior" class="rounded w-full h-full object-cover">
+                                <img src="https://picsum.photos/seed/accommodation3/400/300" alt="Camp view" class="rounded w-full h-full object-cover">
+                                <img src="https://picsum.photos/seed/accommodation4/400/300" alt="Dining area" class="rounded w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:p-8 flex flex-col justify-center">
+                                <h3 class="text-xl font-semibold mb-2">Luxury Tent Camp</h3>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div class="flex items-center gap-1">
+                                        <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        <iconify-icon icon="mdi:star-half-full" class="text-mint text-sm"></iconify-icon>
+                                    </div>
+                                    <span class="text-xs text-sub">4.5/5 from 89 reviews</span>
+                                </div>
+                                <p class="text-sub text-sm mb-6 leading-relaxed">
+                                    Our luxury tented camp combines the thrill of outdoor living with modern comforts. Each 45m² safari-style tent features a king bed with premium linens, en-suite bathroom with hot shower, heating system, and private deck with valley views.
+                                </p>
+                                <div class="grid grid-cols-2 gap-3 text-sm">
+                                    <div class="flex items-center gap-2 text-sub">
+                                        <iconify-icon icon="mdi:wifi" class="text-mint"></iconify-icon>
+                                        <span>Free WiFi</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-sub">
+                                        <iconify-icon icon="mdi:power-plug" class="text-mint"></iconify-icon>
+                                        <span>24h Electricity</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-sub">
+                                        <iconify-icon icon="mdi:shower" class="text-mint"></iconify-icon>
+                                        <span>En-suite Bathroom</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-sub">
+                                        <iconify-icon icon="mdi:fire" class="text-mint"></iconify-icon>
+                                        <span>Heating System</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photo Gallery -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Gallery</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        Photo Gallery
+                    </h2>
+                    
+                    <div class="gallery-slider pb-4">
+                        <img src="https://picsum.photos/seed/gallery-a/400/300" alt="Gallery image" class="gallery-slide w-72 h-48 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-mint transition-all">
+                        <img src="https://picsum.photos/seed/gallery-b/400/300" alt="Gallery image" class="gallery-slide w-72 h-48 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-mint transition-all">
+                        <img src="https://picsum.photos/seed/gallery-c/400/300" alt="Gallery image" class="gallery-slide w-72 h-48 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-mint transition-all">
+                        <img src="https://picsum.photos/seed/gallery-d/400/300" alt="Gallery image" class="gallery-slide w-72 h-48 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-mint transition-all">
+                        <img src="https://picsum.photos/seed/gallery-e/400/300" alt="Gallery image" class="gallery-slide w-72 h-48 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-mint transition-all">
+                    </div>
+                </section>
+
+                <!-- Reviews -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Reviews</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">
+                            Guest Reviews
+                        </h2>
+                        <a href="#" class="text-sm text-mint hover:underline">View all 412 reviews</a>
+                    </div>
+                    
+                    <!-- Rating Summary -->
+                    <div class="flex flex-col md:flex-row gap-8 mb-8 p-6 border border-border rounded-xl bg-panel/50">
+                        <div class="text-center md:text-left">
+                            <div class="text-5xl font-bold text-mint mb-2">4.9</div>
+                            <div class="flex items-center justify-center md:justify-start gap-1 mb-2">
+                                <iconify-icon icon="mdi:star" class="text-mint"></iconify-icon>
+                                <iconify-icon icon="mdi:star" class="text-mint"></iconify-icon>
+                                <iconify-icon icon="mdi:star" class="text-mint"></iconify-icon>
+                                <iconify-icon icon="mdi:star" class="text-mint"></iconify-icon>
+                                <iconify-icon icon="mdi:star-half-full" class="text-mint"></iconify-icon>
+                            </div>
+                            <p class="text-sm text-sub">412 verified reviews</p>
+                        </div>
+                        <div class="flex-grow space-y-2">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-sub w-20">Guide</span>
+                                <div class="flex-grow h-2 bg-void rounded-full overflow-hidden">
+                                    <div class="h-full bg-mint rounded-full" style="width: 98%"></div>
+                                </div>
+                                <span class="text-xs text-sub w-8">4.9</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-sub w-20">Activities</span>
+                                <div class="flex-grow h-2 bg-void rounded-full overflow-hidden">
+                                    <div class="h-full bg-mint rounded-full" style="width: 95%"></div>
+                                </div>
+                                <span class="text-xs text-sub w-8">4.8</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-sub w-20">Accommodation</span>
+                                <div class="flex-grow h-2 bg-void rounded-full overflow-hidden">
+                                    <div class="h-full bg-mint rounded-full" style="width: 94%"></div>
+                                </div>
+                                <span class="text-xs text-sub w-8">4.7</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-sub w-20">Food</span>
+                                <div class="flex-grow h-2 bg-void rounded-full overflow-hidden">
+                                    <div class="h-full bg-mint rounded-full" style="width: 92%"></div>
+                                </div>
+                                <span class="text-xs text-sub w-8">4.6</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-sub w-20">Value</span>
+                                <div class="flex-grow h-2 bg-void rounded-full overflow-hidden">
+                                    <div class="h-full bg-mint rounded-full" style="width: 90%"></div>
+                                </div>
+                                <span class="text-xs text-sub w-8">4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Review Cards -->
+                    <div class="space-y-4">
+                        <div class="border border-border rounded-xl p-6 card-hover">
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/seed/reviewer1/100/100" alt="Reviewer" class="w-12 h-12 rounded-full object-cover">
+                                <div class="flex-grow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <h4 class="font-semibold">Michael & Sarah Thompson</h4>
+                                            <p class="text-xs text-sub">Denver, USA · December 2024</p>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-sub leading-relaxed">
+                                        "This was hands down the best adventure trip we've ever taken. Our guide Marcus was exceptional - knowledgeable, patient, and genuinely passionate about the valley. The summit day was challenging but so rewarding, and the wildlife safari exceeded all expectations. Can't recommend this package enough!"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl p-6 card-hover">
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/seed/reviewer2/100/100" alt="Reviewer" class="w-12 h-12 rounded-full object-cover">
+                                <div class="flex-grow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <h4 class="font-semibold">Yuki Tanaka</h4>
+                                            <p class="text-xs text-sub">Tokyo, Japan · November 2024</p>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-sub leading-relaxed">
+                                        "Perfect balance of adventure and comfort. The tented camp was incredibly comfortable - I wasn't expecting such luxury in the wilderness! The stargazing night was magical - we saw the Milky Way so clearly. Our guide adjusted the pace perfectly for our group's abilities."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl p-6 card-hover">
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/seed/reviewer3/100/100" alt="Reviewer" class="w-12 h-12 rounded-full object-cover">
+                                <div class="flex-grow">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div>
+                                            <h4 class="font-semibold">Emma Lindberg</h4>
+                                            <p class="text-xs text-sub">Stockholm, Sweden · November 2024</p>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star" class="text-mint text-sm"></iconify-icon>
+                                            <iconify-icon icon="mdi:star-outline" class="text-sub text-sm"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-sub leading-relaxed">
+                                        "An incredible experience from start to finish. The only reason for 4 stars is I wish we had more time at Crystal Lake - it was so beautiful! The food was outstanding - much better than I expected for a camping trip. Already planning my return trip for next year."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQs -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">FAQ</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        Frequently Asked Questions
+                    </h2>
+                    
+                    <div class="space-y-3" id="faqAccordion">
+                        <div class="border border-border rounded-xl overflow-hidden">
+                            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-panel/50 transition-colors" onclick="toggleAccordion(this)">
+                                <span class="font-medium">What fitness level is required?</span>
+                                <iconify-icon icon="mdi:chevron-down" class="text-xl transition-transform"></iconify-icon>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="px-6 pb-4 text-sm text-sub leading-relaxed">
+                                    This package is suitable for anyone with moderate fitness. The summit day involves approximately 6-7 hours of hiking with significant elevation gain, but no technical climbing skills are required. We recommend being able to walk 10km comfortably. Our guides can adjust the pace based on group ability, and there are always alternative activities available if anyone prefers to skip certain activities.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl overflow-hidden">
+                            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-panel/50 transition-colors" onclick="toggleAccordion(this)">
+                                <span class="font-medium">What should I pack?</span>
+                                <iconify-icon icon="mdi:chevron-down" class="text-xl transition-transform"></iconify-icon>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="px-6 pb-4 text-sm text-sub leading-relaxed">
+                                    We provide a detailed packing list after booking. Essentials include: broken-in hiking boots, layered clothing, waterproof jacket, sun protection, and a daypack (25-30L). All technical equipment (helmets, harnesses, climbing gear) is provided. Gear rental is available if needed. Temperature can vary significantly, so layers are essential.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl overflow-hidden">
+                            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-panel/50 transition-colors" onclick="toggleAccordion(this)">
+                                <span class="font-medium">What is the cancellation policy?</span>
+                                <iconify-icon icon="mdi:chevron-down" class="text-xl transition-transform"></iconify-icon>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="px-6 pb-4 text-sm text-sub leading-relaxed">
+                                    Free cancellation up to 48 hours before departure for a full refund. Cancellations within 48 hours receive 50% refund or 100% credit towards a future booking. In case of extreme weather conditions requiring cancellation by us, you'll receive a full refund or free rescheduling. We strongly recommend travel insurance for additional protection.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl overflow-hidden">
+                            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-panel/50 transition-colors" onclick="toggleAccordion(this)">
+                                <span class="font-medium">Can solo travelers join?</span>
+                                <iconify-icon icon="mdi:chevron-down" class="text-xl transition-transform"></iconify-icon>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="px-6 pb-4 text-sm text-sub leading-relaxed">
+                                    Absolutely! Many of our guests are solo travelers. It's a great way to meet like-minded adventurers. Single supplement accommodation is available for an additional $150, or you can opt to share a tent with another solo traveler of the same gender at no extra cost. Our small group sizes create a friendly, inclusive atmosphere.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl overflow-hidden">
+                            <button class="accordion-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-panel/50 transition-colors" onclick="toggleAccordion(this)">
+                                <span class="font-medium">Is this suitable for children?</span>
+                                <iconify-icon icon="mdi:chevron-down" class="text-xl transition-transform"></iconify-icon>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="px-6 pb-4 text-sm text-sub leading-relaxed">
+                                    This package is recommended for ages 14 and above due to the physical demands of summit day. For families with younger children (8-13), we recommend our Family Explorer package which has modified activities. Children under 18 must be accompanied by an adult. Please contact us to discuss your specific needs.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- What to Prepare -->
+                <section class="reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">Prepare</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-8">
+                        How to Prepare
+                    </h2>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="border border-border rounded-xl p-6 text-center card-hover">
+                            <div class="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mx-auto mb-4">
+                                <iconify-icon icon="mdi:run" class="text-mint text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-semibold mb-2">Physical Prep</h3>
+                            <p class="text-sm text-sub">Start cardio training 4-6 weeks before. Aim for 3-4 sessions per week including stairs and incline walking.</p>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl p-6 text-center card-hover">
+                            <div class="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mx-auto mb-4">
+                                <iconify-icon icon="mdi:hiking" class="text-mint text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-semibold mb-2">Gear Check</h3>
+                            <p class="text-sm text-sub">Test all gear before arrival. Break in hiking boots with several long walks to prevent blisters.</p>
+                        </div>
+                        
+                        <div class="border border-border rounded-xl p-6 text-center card-hover">
+                            <div class="w-16 h-16 rounded-full bg-mint/10 flex items-center justify-center mx-auto mb-4">
+                                <iconify-icon icon="mdi:medical-bag" class="text-mint text-3xl"></iconify-icon>
+                            </div>
+                            <h3 class="font-semibold mb-2">Health</h3>
+                            <p class="text-sm text-sub">Consult your doctor if you have any conditions. Bring personal medications and inform us of allergies.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Booking Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="booking-sidebar">
+                    <div class="border border-border rounded-xl bg-panel/80 backdrop-blur-sm overflow-hidden sticky top-20">
+                        <!-- Price Header -->
+                        <div class="p-6 border-b border-border bg-void/50">
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span class="text-4xl font-bold text-mint">$599</span>
+                                <span class="text-sub">/ person</span>
+                            </div>
+                            <p class="text-sm text-sub">5 days · All-inclusive</p>
+                        </div>
+                        
+                        <!-- Booking Form -->
+                        <div class="p-6">
+                            <form id="sidebarBookingForm" class="space-y-4">
+                                <div>
+                                    <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Select Date</label>
+                                    <select class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                        <option>Dec 20-24, 2024</option>
+                                        <option>Dec 27-31, 2024</option>
+                                        <option>Jan 3-7, 2025</option>
+                                        <option>Jan 10-14, 2025</option>
+                                        <option>Jan 17-21, 2025</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Adults</label>
+                                        <select class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                            <option>1</option>
+                                            <option selected>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-sub uppercase tracking-wide mb-2 block">Children</label>
+                                        <select class="w-full bg-void border border-border rounded px-4 py-3 text-sm focus:border-mint focus:outline-none appearance-none cursor-pointer">
+                                            <option selected>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Price Breakdown -->
+                                <div class="py-4 border-y border-border space-y-2">
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-sub">$599 × 2 adults</span>
+                                        <span>$1,198</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-sub">Service fee</span>
+                                        <span>$0</span>
+                                    </div>
+                                    <div class="flex justify-between font-semibold pt-2">
+                                        <span>Total</span>
+                                        <span class="text-mint">$1,198</span>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn-primary w-full py-4 text-sm rounded glow-mint-hover flex items-center justify-center gap-2">
+                                    <iconify-icon icon="mdi:credit-card"></iconify-icon>
+                                    Reserve Now
+                                </button>
+                                
+                                <p class="text-xs text-sub text-center">
+                                    <iconify-icon icon="mdi:lock" class="inline mr-1"></iconify-icon>
+                                    Secure payment · Free cancellation
+                                </p>
+                            </form>
+                        </div>
+                        
+                        <!-- Quick Info -->
+                        <div class="p-6 bg-void/50 border-t border-border">
+                            <h4 class="font-semibold mb-4">Quick Info</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="mdi:clock-outline" class="text-mint"></iconify-icon>
+                                    <span class="text-sub">Duration: 5 days / 4 nights</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="mdi:account-group" class="text-mint"></iconify-icon>
+                                    <span class="text-sub">Group size: Max 12 people</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="mdi:translate" class="text-mint"></iconify-icon>
+                                    <span class="text-sub">Languages: English, Spanish, German</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <iconify-icon icon="mdi:calendar-check" class="text-mint"></iconify-icon>
+                                    <span class="text-sub">Available: Year-round</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact -->
+                        <div class="p-6 border-t border-border">
+                            <p class="text-sm text-sub mb-3">Questions about this package?</p>
+                            <a href="contact.html" class="btn-secondary w-full py-3 text-sm rounded flex items-center justify-center gap-2">
+                                <iconify-icon icon="mdi:chat-outline"></iconify-icon>
+                                Contact Us
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Trust Badges -->
+                    <div class="mt-6 grid grid-cols-3 gap-3">
+                        <div class="border border-border rounded-lg p-4 text-center">
+                            <iconify-icon icon="mdi:shield-check" class="text-mint text-2xl mb-1"></iconify-icon>
+                            <p class="text-xs text-sub">Secure</p>
+                        </div>
+                        <div class="border border-border rounded-lg p-4 text-center">
+                            <iconify-icon icon="mdi:certificate" class="text-mint text-2xl mb-1"></iconify-icon>
+                            <p class="text-xs text-sub">Certified</p>
+                        </div>
+                        <div class="border border-border rounded-lg p-4 text-center">
+                            <iconify-icon icon="mdi:heart" class="text-mint text-2xl mb-1"></iconify-icon>
+                            <p class="text-xs text-sub">Trusted</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Related Packages -->
+    <section class="py-20 border-t border-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-2 h-2 bg-mint rounded-full"></div>
+                        <span class="text-xs font-mono font-medium tracking-widest uppercase text-mint">More Options</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">
+                        Other Packages You Might Like
+                    </h2>
+                </div>
+                <a href="packages.html" class="btn-secondary px-6 py-2 text-xs font-semibold uppercase tracking-wide rounded hidden md:block">
+                    View All
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Essential Explorer -->
+                <div class="border border-border rounded-xl overflow-hidden card-hover group">
+                    <div class="aspect-video overflow-hidden relative">
+                        <img src="https://picsum.photos/seed/related-package1/600/400" alt="Essential Explorer" class="w-full h-full object-cover img-hover">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-tag">3 Days</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-mint transition-colors">Essential Explorer</h3>
+                        <p class="text-sm text-sub mb-4">Perfect introduction to Emerald Valley's highlights</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-mint">$299</span>
+                                <span class="text-xs text-sub">/person</span>
+                            </div>
+                            <button class="btn-primary px-4 py-2 text-xs rounded">View</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ultimate Experience -->
+                <div class="border border-mint rounded-xl overflow-hidden card-hover group relative">
+                    <div class="absolute top-4 right-4 bg-mint text-void text-xs font-semibold px-3 py-1 rounded z-10">Premium</div>
+                    <div class="aspect-video overflow-hidden relative">
+                        <img src="https://picsum.photos/seed/related-package2/600/400" alt="Ultimate Experience" class="w-full h-full object-cover img-hover">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-tag">7 Days</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-mint transition-colors">Ultimate Experience</h3>
+                        <p class="text-sm text-sub mb-4">All-inclusive premium adventure with helicopter tour</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-mint">$999</span>
+                                <span class="text-xs text-sub">/person</span>
+                            </div>
+                            <button class="btn-primary px-4 py-2 text-xs rounded">View</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Family Explorer -->
+                <div class="border border-border rounded-xl overflow-hidden card-hover group">
+                    <div class="aspect-video overflow-hidden relative">
+                        <img src="https://picsum.photos/seed/related-package3/600/400" alt="Family Explorer" class="w-full h-full object-cover img-hover">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-tag">4 Days</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold mb-2 group-hover:text-mint transition-colors">Family Explorer</h3>
+                        <p class="text-sm text-sub mb-4">Kid-friendly activities and family accommodations</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-2xl font-bold text-mint">$449</span>
+                                <span class="text-xs text-sub">/person</span>
+                            </div>
+                            <button class="btn-primary px-4 py-2 text-xs rounded">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-border py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-mint flex items-center justify-center">
+                            <iconify-icon icon="mdi:mountain" class="text-void text-xl"></iconify-icon>
+                        </div>
+                        <span class="text-lg font-semibold tracking-wide">Emerald Valley</span>
+                    </div>
+                    <p class="text-sm text-sub leading-relaxed">
+                        A UNESCO World Heritage Site offering pristine wilderness, breathtaking landscapes, and unforgettable adventures.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Valley Overview</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Photo Gallery</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Travel Guides</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">All Packages</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Trail Maps</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Wildlife Guide</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Weather Updates</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Safety Guidelines</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Accessibility</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-mint transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-mint transition-colors">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="divider mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-sub">
+                    © 2024 Emerald Valley Tourism Board. All rights reserved.
+                </p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="text-sub hover:text-mint transition-colors">
+                        <iconify-icon icon="mdi:instagram" class="text-lg"></iconify-icon>
+                    </a>
+                    <a href="#" class="text-sub hover:text-mint transition-colors">
+                        <iconify-icon icon="mdi:facebook" class="text-lg"></iconify-icon>
+                    </a>
+                    <a href="#" class="text-sub hover:text-mint transition-colors">
+                        <iconify-icon icon="mdi:twitter" class="text-lg"></iconify-icon>
+                    </a>
+                    <a href="#" class="text-sub hover:text-mint transition-colors">
+                        <iconify-icon icon="mdi:youtube" class="text-lg"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Preloader
+        let progress = 0;
+        const progressBar = document.getElementById('preloaderProgress');
+        const preloader = document.querySelector('.preloader');
+        
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress > 100) progress = 100;
+            progressBar.style.width = progress + '%';
+            
+            if (progress === 100) {
+                clearInterval(progressInterval);
+                setTimeout(() => {
+                    gsap.to(preloader, {
+                        yPercent: -100,
+                        duration: 0.8,
+                        ease: 'power4.inOut',
+                        onComplete: () => {
+                            preloader.style.display = 'none';
+                        }
+                    });
+                }, 300);
+            }
+        }, 100);
+
+        // Scroll Reveal
+        document.querySelectorAll('.reveal').forEach(el => {
+            gsap.fromTo(el, 
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 90%',
+                        end: 'bottom 10%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // Accordion
+        function toggleAccordion(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('iconify-icon');
+            
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.accordion-btn iconify-icon').forEach(i => {
+                if (i !== icon) {
+                    i.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Form submission
+        document.getElementById('sidebarBookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Create success message
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<iconify-icon icon="mdi:check" class="mr-2"></iconify-icon> Reserved!';
+            btn.classList.add('bg-green-500');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-green-500');
+            }, 2000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Gallery slider drag scroll
+        const slider = document.querySelector('.gallery-slider');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-void/95');
+            } else {
+                nav.classList.remove('bg-void/95');
+            }
+        });
+    </script>
+</body>
+</html>

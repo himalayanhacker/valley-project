@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore travel packages for Emerald Valley. From adventure trekking to family trips, find your perfect itinerary.">
+    <title>Travel Packages | Emerald Valley</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#010409',
+                        panel: '#0d1117',
+                        sky: '#38bdf8',
+                        'sky-dark': '#0ea5e9',
+                        leaf: '#4ade80',
+                        'leaf-dark': '#22c55e',
+                        border: 'rgba(56,189,248,0.15)',
+                        'border-strong': 'rgba(56,189,248,0.3)',
+                        sub: '#8b949e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    letterSpacing: {
+                        tightest: '-0.04em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: #010409;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: #010409;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .preloader-text {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(56,189,248,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(56,189,248,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(to top, #010409, rgba(1,4,9,0.6), transparent);
+        }
+        
+        .radial-gradient {
+            background: radial-gradient(ellipse at center, rgba(56,189,248,0.08), transparent 70%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56,189,248,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .img-hover {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover:hover .img-hover {
+            transform: scale(1.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(56,189,248,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(56,189,248,0.3);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,0.2), transparent);
+        }
+        
+        .category-tag {
+            background: rgba(56,189,248,0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.2);
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, #38bdf8, #4ade80);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+        
+        /* Filter active state */
+        .filter-btn.active {
+            background: linear-gradient(135deg, #38bdf8, #4ade80);
+            color: #010409;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <!-- Preloader -->
+    <div class="preloader">
+        <span class="preloader-text">Loading Packages...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-sky to-leaf flex items-center justify-center">
+                    <iconify-icon icon="mdi:mountain" class="text-void text-lg"></iconify-icon>
+                </div>
+                <span class="text-sm font-semibold tracking-wide uppercase">Emerald Valley</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Overview</a>
+                <a href="gallery.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Gallery</a>
+                <a href="explore.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Explore</a>
+                <a href="packages.html" class="nav-link active text-xs font-semibold uppercase tracking-wide text-sky">Packages</a>
+                <a href="contact.html" class="nav-link text-xs font-semibold uppercase tracking-wide text-sub hover:text-sky transition-colors">Contact</a>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-4">
+                <a href="contact.html" class="btn-secondary px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded">
+                    Custom Trip
+                </a>
+                <a href="#packages" class="btn-primary px-5 py-2 text-xs rounded">
+                    Book Now
+                </a>
+            </div>
+            
+            <button id="mobileMenuBtn" class="md:hidden text-2xl">
+                <iconify-icon icon="mdi:menu"></iconify-icon>
+            </button>
+        </div>
+        
+        <div id="mobileMenu" class="md:hidden hidden bg-panel border-t border-border">
+            <div class="px-6 py-4 flex flex-col gap-4">
+                <a href="index.html" class="text-sm font-medium text-sub hover:text-sky transition-colors">Overview</a>
+                <a href="gallery.html" class="text-sm font-medium text-sub hover:text-sky transition-colors">Gallery</a>
+                <a href="explore.html" class="text-sm font-medium text-sub hover:text-sky transition-colors">Explore</a>
+                <a href="packages.html" class="text-sm font-medium text-sky">Packages</a>
+                <a href="contact.html" class="text-sm font-medium text-sub hover:text-sky transition-colors">Contact</a>
+                <div class="divider my-2"></div>
+                <a href="#packages" class="btn-primary px-5 py-3 text-sm text-center rounded">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://picsum.photos/seed/packages-hero/1920/600" alt="Background" class="w-full h-full object-cover grayscale">
+            <div class="hero-gradient absolute inset-0"></div>
+        </div>
+        <div class="radial-gradient absolute inset-0"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-full mb-6">
+                <iconify-icon icon="mdi:bag-suitcase" class="text-sky"></iconify-icon>
+                <span class="text-xs text-sub uppercase tracking-widest">Travel Packages</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-semibold tracking-tightest mb-4">
+                <span class="text-white">CHOOSE YOUR</span>
+                <span class="block bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">ADVENTURE</span>
+            </h1>
+            
+            <p class="text-sub text-lg max-w-xl mx-auto">
+                All-inclusive experiences designed to showcase the best of Emerald Valley. Find your perfect journey.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="sticky top-16 z-40 bg-void/95 backdrop-blur-xl border-y border-border py-4">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between gap-4 overflow-x-auto pb-2 md:pb-0">
+                <div class="flex gap-2">
+                    <button class="filter-btn active px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded whitespace-nowrap" data-filter="all">
+                        All Packages
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub whitespace-nowrap hover:border-sky hover:text-sky transition-all" data-filter="adventure">
+                        Adventure
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub whitespace-nowrap hover:border-sky hover:text-sky transition-all" data-filter="family">
+                        Family
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub whitespace-nowrap hover:border-sky hover:text-sky transition-all" data-filter="luxury">
+                        Luxury
+                    </button>
+                    <button class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wide border border-border rounded text-sub whitespace-nowrap hover:border-sky hover:text-sky transition-all" data-filter="seasonal">
+                        Seasonal
+                    </button>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-2 text-sub text-xs">
+                    <span>6 Packages Found</span>
+                    <span class="mx-2">|</span>
+                    <span>Sort by: <span class="text-sky cursor-pointer">Recommended</span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="packages" class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Package 1: Essential Explorer -->
+            <div class="reveal border border-border rounded-2xl overflow-hidden card-hover group" data-category="adventure">
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-essential/800/500" alt="Essential Explorer" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span class="category-tag">3 Days</span>
+                        <span class="category-tag bg-sky/20 text-sky border-sky/30">Adventure</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">4.7</span>
+                        <span class="text-xs text-sub">(234 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Essential Explorer</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">Perfect introduction to the valley's highlights. Great for weekend getaways.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Guided Valley Tour</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Sunrise Hike</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Lake Kayaking</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$299</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package 2: Adventure Seeker (Featured) -->
+            <div class="reveal border border-sky rounded-2xl overflow-hidden card-hover group relative" data-category="adventure">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky to-leaf"></div>
+                <div class="absolute top-4 right-4 bg-gradient-to-r from-sky to-leaf text-void text-xs font-bold px-3 py-1 rounded-full z-10">MOST POPULAR</div>
+                
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-adventure/800/500" alt="Adventure Seeker" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2 z-10">
+                        <span class="category-tag">5 Days</span>
+                        <span class="category-tag bg-sky/20 text-sky border-sky/30">Adventure</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">4.9</span>
+                        <span class="text-xs text-sub">(412 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Adventure Seeker</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">Thrilling expeditions for outdoor enthusiasts. Summit peaks and explore wild trails.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Summit Expedition</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Wildlife Safari</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Stargazing Camp</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$599</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package 3: Ultimate Experience -->
+            <div class="reveal border border-border rounded-2xl overflow-hidden card-hover group relative" data-category="luxury">
+                <div class="absolute top-4 right-4 bg-leaf text-void text-xs font-bold px-3 py-1 rounded-full z-10">PREMIUM</div>
+                
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-ultimate/800/500" alt="Ultimate Experience" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2 z-10">
+                        <span class="category-tag">7 Days</span>
+                        <span class="category-tag bg-leaf/20 text-leaf border-leaf/30">Luxury</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">4.9</span>
+                        <span class="text-xs text-sub">(189 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Ultimate Experience</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">All-inclusive premium adventure with helicopter tour and spa treatments.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Helicopter Tour</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Premium Resort Stay</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Photography Workshop</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$999</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package 4: Family Fun -->
+            <div class="reveal border border-border rounded-2xl overflow-hidden card-hover group" data-category="family">
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-family/800/500" alt="Family Fun" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span class="category-tag">4 Days</span>
+                        <span class="category-tag bg-leaf/20 text-leaf border-leaf/30">Family</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">4.8</span>
+                        <span class="text-xs text-sub">(156 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Family Fun Adventure</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">Kid-friendly activities and family accommodations. Perfect for all ages.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Easy Nature Trails</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Wildlife Spotting</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Family Game Nights</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$449</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package 5: Winter Wonderland -->
+            <div class="reveal border border-border rounded-2xl overflow-hidden card-hover group" data-category="seasonal">
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-winter/800/500" alt="Winter Wonderland" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span class="category-tag">5 Days</span>
+                        <span class="category-tag bg-sky/20 text-sky border-sky/30">Seasonal</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">4.7</span>
+                        <span class="text-xs text-sub">(98 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Winter Wonderland</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">Skiing, snowshoeing, and cozy cabin stays. Available Dec - Feb.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Guided Ski Tours</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Hot Springs Visit</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Aurora Borealis Watch</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$699</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package 6: Photography Retreat -->
+            <div class="reveal border border-border rounded-2xl overflow-hidden card-hover group" data-category="luxury">
+                <div class="aspect-video overflow-hidden relative">
+                    <img src="https://picsum.photos/seed/pkg-photo/800/500" alt="Photography Retreat" class="img-hover w-full h-full object-cover">
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        <span class="category-tag">4 Days</span>
+                        <span class="category-tag bg-leaf/20 text-leaf border-leaf/30">Luxury</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-1 mb-2">
+                        <iconify-icon icon="mdi:star" class="text-leaf text-sm"></iconify-icon>
+                        <span class="text-sm font-medium">5.0</span>
+                        <span class="text-xs text-sub">(67 reviews)</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-sky transition-colors">Photography Retreat</h3>
+                    <p class="text-sm text-sub mb-4 line-clamp-2">Masterclasses with pros, golden hour tours, and exclusive access.</p>
+                    
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Pro Photography Guide</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Exclusive Locations</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-sub">
+                            <iconify-icon icon="mdi:check-circle" class="text-leaf"></iconify-icon>
+                            <span>Editing Workshops</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-border">
+                        <div>
+                            <span class="text-xs text-sub">From</span>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-sky to-leaf bg-clip-text text-transparent">$849</p>
+                            <span class="text-xs text-sub">per person</span>
+                        </div>
+                        <a href="package-detail.html" class="btn-primary px-5 py-2 text-xs rounded">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Custom Trip CTA -->
+    <section class="py-20 bg-panel border-t border-border">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <iconify-icon icon="mdi:route" class="text-sky text-5xl mb-6"></iconify-icon>
+            <h2 class="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
+                Need a Custom Itinerary?
+            </h2>
+            <p class="text-sub mb-8 max-w-xl mx-auto">
+                Our travel experts can create a personalized package tailored to your specific interests, schedule, and group size.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="contact.html" class="btn-primary px-8 py-4 text-sm rounded glow-sky flex items-center justify-center gap-2">
+                    <iconify-icon icon="mdi:calendar-edit"></iconify-icon>
+                    Request Custom Trip
+                </a>
+                <a href="contact.html" class="btn-secondary px-8 py-4 text-sm rounded flex items-center justify-center gap-2">
+                    <iconify-icon icon="mdi:phone"></iconify-icon>
+                    Call Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-void border-t border-border py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-gradient-to-br from-sky to-leaf flex items-center justify-center">
+                            <iconify-icon icon="mdi:mountain" class="text-void text-xl"></iconify-icon>
+                        </div>
+                        <span class="text-lg font-semibold tracking-wide">Emerald Valley</span>
+                    </div>
+                    <p class="text-sm text-sub leading-relaxed">
+                        A UNESCO World Heritage Site offering pristine wilderness and unforgettable adventures.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="index.html" class="hover:text-sky transition-colors">Valley Overview</a></li>
+                        <li><a href="gallery.html" class="hover:text-sky transition-colors">Photo Gallery</a></li>
+                        <li><a href="explore.html" class="hover:text-sky transition-colors">Travel Guides</a></li>
+                        <li><a href="contact.html" class="hover:text-sky transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-sub">
+                        <li><a href="#" class="hover:text-sky transition-colors">Trail Maps</a></li>
+                        <li><a href="#" class="hover:text-sky transition-colors">Wildlife Guide</a></li>
+                        <li><a href="#" class="hover:text-sky transition-colors">Safety Guidelines</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-sky hover:border-sky transition-all">
+                            <iconify-icon icon="mdi:instagram" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-sky hover:border-sky transition-all">
+                            <iconify-icon icon="mdi:facebook" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded border border-border flex items-center justify-center text-sub hover:text-sky hover:border-sky transition-all">
+                            <iconify-icon icon="mdi:twitter" class="text-lg"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-sub">© 2024 Emerald Valley Tourism Board. All rights reserved.</p>
+                <p class="text-xs text-sub">
+                    Designed with <iconify-icon icon="mdi:heart" class="text-sky inline"></iconify-icon> for nature lovers
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('load', () => {
+            gsap.to('.preloader', {
+                yPercent: -100,
+                duration: 0.8,
+                ease: 'power4.inOut',
+                delay: 0.3,
+                onComplete: () => {
+                    document.querySelector('.preloader').style.display = 'none';
+                }
+            });
+        });
+
+        // Scroll Animations
+        document.querySelectorAll('.reveal').forEach(el => {
+            gsap.fromTo(el, 
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 95%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // Mobile Menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Filter Functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const packages = document.querySelectorAll('[data-category]');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                // Filter cards
+                packages.forEach(pkg => {
+                    if (filter === 'all' || pkg.dataset.category === filter) {
+                        gsap.to(pkg, { opacity: 1, scale: 1, duration: 0.3, display: 'block' });
+                    } else {
+                        gsap.to(pkg, { opacity: 0, scale: 0.95, duration: 0.3, display: 'none' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
