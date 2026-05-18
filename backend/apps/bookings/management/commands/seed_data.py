@@ -1,3 +1,5 @@
+import os
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from apps.bookings.models import Package
@@ -20,11 +22,11 @@ class Command(BaseCommand):
             User.objects.create_superuser(
                 username='admin',
                 email='admin@uttarshallvalley.in',
-                password='admin123',
+                password=os.environ.get('ADMIN_PASSWORD'),
                 first_name='Valley',
                 last_name='Admin',
             )
-            self.stdout.write('  Created superuser: admin / admin123')
+            self.stdout.write('  Created superuser: admin / ' + os.environ.get('ADMIN_PASSWORD'))
 
     def _create_packages(self):
         packages = [
