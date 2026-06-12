@@ -20,29 +20,27 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="grid-bg">
+    <div>
       {/* Hero */}
       <section className="relative h-screen flex flex-col items-center justify-end pb-24 overflow-hidden">
         <div className="absolute inset-0">
           <img src={IMAGES.hero} alt="Prashar Lake, Uttarshall Valley"
-            className="w-full h-full object-cover grayscale contrast-125 opacity-60" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #010409, rgba(1,4,9,0.6), transparent)' }} />
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.08), transparent 70%)' }} />
+            className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgb(var(--canvas)), rgb(var(--canvas) / 0.6), transparent)' }} />
         </div>
-        <div className="scan-line" />
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <p className="text-xs font-medium tracking-widest uppercase text-pine mb-6">
             Mandi District · Himachal Pradesh · India
           </p>
           <h1 className="text-4xl md:text-7xl font-semibold tracking-tightest leading-none mb-6">
-            <span className="block text-white">UTTARSHALL</span>
+            <span className="block text-ink">UTTARSHALL</span>
             <span className="block bg-gradient-to-r from-pine to-moss bg-clip-text text-transparent">VALLEY</span>
           </h1>
           <p className="text-soft text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
             A pristine Himalayan paradise where snow leopards roam ancient forests, sacred lakes mirror towering peaks, and every trail leads to breathtaking discovery.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/packages" className="btn-primary px-10 py-4 text-sm rounded" style={{ boxShadow: '0 0 15px rgba(56,189,248,0.3)' }}>
+            <Link to="/packages" className="btn-primary px-10 py-4 text-sm rounded">
               Plan Your Visit
             </Link>
             <Link to="/explore" className="btn-secondary px-10 py-4 text-sm rounded flex items-center justify-center gap-2">
@@ -61,7 +59,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           {STATS.map((s, i) => (
             <div key={i} className="text-center">
-              <p className="text-2xl md:text-3xl font-semibold mb-1" style={{ background: 'linear-gradient(to right, #fff, #38bdf8, #4ade80)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <p className="text-2xl md:text-3xl font-semibold mb-1 bg-gradient-to-r from-pine to-sun bg-clip-text text-transparent">
                 {s.value}
               </p>
               <p className="text-xs text-soft uppercase tracking-wide">{s.label}</p>
@@ -110,15 +108,15 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="relative overflow-hidden rounded-lg aspect-[4/5]">
                   <img src={IMAGES.prasharLake} alt="Prashar Lake"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, #010409, transparent)' }}>
+                    className="w-full h-full object-cover transition-all duration-700" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
                     <p className="text-xs font-medium">Prashar Lake</p>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-lg aspect-square">
                   <img src={IMAGES.uhlRiver} alt="Uhl River, Barot"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, #010409, transparent)' }}>
+                    className="w-full h-full object-cover transition-all duration-700" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
                     <p className="text-xs font-medium">Uhl River, Barot</p>
                   </div>
                 </div>
@@ -126,15 +124,15 @@ export default function Home() {
               <div className="space-y-4 pt-8">
                 <div className="relative overflow-hidden rounded-lg aspect-square">
                   <img src={IMAGES.himachalForest} alt="Deodar Forest"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, #010409, transparent)' }}>
+                    className="w-full h-full object-cover transition-all duration-700" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
                     <p className="text-xs font-medium">Deodar Forests</p>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-lg aspect-[4/5]">
                   <img src={IMAGES.panchvaktraTemple} alt="Panchvaktra Temple, Mandi"
-                    className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, #010409, transparent)' }}>
+                    className="w-full h-full object-cover object-top transition-all duration-700" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
                     <p className="text-xs font-medium">Panchvaktra Temple</p>
                   </div>
                 </div>

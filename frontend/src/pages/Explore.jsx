@@ -20,7 +20,7 @@ export function ArticleList() {
   }, [category, search])
 
   return (
-    <div className="pt-16 min-h-screen grid-bg">
+    <div className="pt-16 min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
@@ -87,7 +87,7 @@ export function ArticleDetail() {
   if (!article) return <div className="pt-32 text-center text-soft">Loading...</div>
 
   return (
-    <div className="pt-16 min-h-screen grid-bg">
+    <div className="pt-16 min-h-screen">
       <div className="max-w-3xl mx-auto px-6 py-16">
         <Link to="/explore" className="text-pine text-sm hover:underline mb-8 block">← Back to all articles</Link>
         <span className="category-tag mb-4 inline-block">{article.category}</span>
@@ -103,7 +103,7 @@ export function ArticleDetail() {
           <img src={getArticleImage(article.category)} alt={article.title}
             className="w-full h-full object-cover" />
         </div>
-        <div className="prose prose-invert max-w-none text-soft leading-relaxed space-y-4">
+        <div className="max-w-none text-soft leading-relaxed space-y-4">
           {article.body.split('\n\n').map((para) => (
             <p key={para.slice(0, 40)}>{para}</p>
           ))}

@@ -32,7 +32,7 @@ export default function AuthModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
       <div className="bg-surface border border-line rounded-xl p-8 w-full max-w-md relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-soft hover:text-white transition-colors text-xl">✕</button>
+        <button onClick={onClose} className="absolute top-4 right-4 text-soft hover:text-ink transition-colors text-xl">✕</button>
 
         <h3 className="text-2xl font-semibold mb-2">{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h3>
         <p className="text-soft text-sm mb-6">

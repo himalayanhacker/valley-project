@@ -72,13 +72,13 @@ export default function Gallery({ onLoginClick }) {
                 className={`relative overflow-hidden rounded-lg cursor-pointer group ${i === 0 ? 'col-span-2 row-span-2' : ''}`}
                 style={{ height: i === 0 ? '420px' : '200px' }}>
                 <img src={photo.image} alt={photo.caption}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                  className="w-full h-full object-cover transition-all duration-500" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ background: 'linear-gradient(to top, rgba(1,4,9,0.9), transparent)' }}>
+                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="text-xs text-pine uppercase tracking-wide mb-1">{photo.location}</p>
-                    <p className="text-sm">{photo.caption}</p>
-                    <p className="text-xs text-soft mt-1">by {photo.author_name}</p>
+                    <p className="text-xs text-white uppercase tracking-wide mb-1">{photo.location}</p>
+                    <p className="text-sm text-white">{photo.caption}</p>
+                    <p className="text-xs text-white/70 mt-1">by {photo.author_name}</p>
                   </div>
                 </div>
               </div>
@@ -92,14 +92,14 @@ export default function Gallery({ onLoginClick }) {
         <div className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center"
           onClick={() => setLightbox(null)}>
           <button onClick={e => { e.stopPropagation(); prev() }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-pine z-10">‹</button>
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-white/60 z-10">‹</button>
           <img src={photos[lightbox].image} alt={photos[lightbox].caption}
             className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
             onClick={e => e.stopPropagation()} />
           <button onClick={e => { e.stopPropagation(); next() }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-pine z-10">›</button>
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-3xl hover:text-white/60 z-10">›</button>
           <button onClick={() => setLightbox(null)}
-            className="absolute top-4 right-4 text-white text-3xl hover:text-pine z-10">✕</button>
+            className="absolute top-4 right-4 text-white text-3xl hover:text-white/60 z-10">✕</button>
         </div>
       )}
 
@@ -138,7 +138,7 @@ function UploadModal({ onClose, onSuccess }) {
   return (
     <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
       <div className="bg-surface border border-line rounded-xl p-8 w-full max-w-lg relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-soft hover:text-white text-xl">✕</button>
+        <button onClick={onClose} className="absolute top-4 right-4 text-soft hover:text-ink text-xl">✕</button>
         <h3 className="text-2xl font-semibold mb-2">Upload Your Photo</h3>
         <p className="text-soft text-sm mb-6">Photos are reviewed before appearing in the gallery.</p>
         {error && <p className="text-red-400 text-sm mb-4 p-3 bg-red-400/10 rounded">{error}</p>}
