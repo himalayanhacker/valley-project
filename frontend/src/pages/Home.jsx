@@ -26,7 +26,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <img src={IMAGES.hero} alt="Prashar Lake, Uttarshall Valley"
             className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgb(var(--canvas)), rgb(var(--canvas) / 0.6), transparent)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgb(var(--canvas)) 0%, rgb(var(--canvas) / 0.75) 40%, rgb(var(--canvas) / 0.35) 70%, transparent 100%)' }} />
         </div>
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <p className="text-xs font-medium tracking-widest uppercase text-pine mb-6">
@@ -110,14 +110,14 @@ export default function Home() {
                   <img src={IMAGES.prasharLake} alt="Prashar Lake"
                     className="w-full h-full object-cover transition-all duration-700" />
                   <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
-                    <p className="text-xs font-medium">Prashar Lake</p>
+                    <p className="text-xs font-medium text-white">Prashar Lake</p>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-lg aspect-square">
                   <img src={IMAGES.uhlRiver} alt="Uhl River, Barot"
                     className="w-full h-full object-cover transition-all duration-700" />
                   <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
-                    <p className="text-xs font-medium">Uhl River, Barot</p>
+                    <p className="text-xs font-medium text-white">Uhl River, Barot</p>
                   </div>
                 </div>
               </div>
@@ -126,14 +126,14 @@ export default function Home() {
                   <img src={IMAGES.himachalForest} alt="Deodar Forest"
                     className="w-full h-full object-cover transition-all duration-700" />
                   <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
-                    <p className="text-xs font-medium">Deodar Forests</p>
+                    <p className="text-xs font-medium text-white">Deodar Forests</p>
                   </div>
                 </div>
                 <div className="relative overflow-hidden rounded-lg aspect-[4/5]">
                   <img src={IMAGES.panchvaktraTemple} alt="Panchvaktra Temple, Mandi"
                     className="w-full h-full object-cover object-top transition-all duration-700" />
                   <div className="absolute bottom-0 left-0 right-0 p-4" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}>
-                    <p className="text-xs font-medium">Panchvaktra Temple</p>
+                    <p className="text-xs font-medium text-white">Panchvaktra Temple</p>
                   </div>
                 </div>
               </div>
