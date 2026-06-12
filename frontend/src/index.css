@@ -12,6 +12,7 @@
   --sun: 217 119 6;
   --line: 228 231 226;
   --line-strong: 201 208 202;
+  --on-accent: 255 255 255;
   color-scheme: light;
 }
 
@@ -25,6 +26,7 @@
   --sun: 245 165 36;
   --line: 36 48 41;
   --line-strong: 51 69 59;
+  --on-accent: 15 21 18;
   color-scheme: dark;
 }
 
@@ -49,7 +51,7 @@ body {
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, rgb(var(--pine)), rgb(var(--moss)));
-  color: #ffffff;
+  color: rgb(var(--on-accent));
   font-weight: 600;
   letter-spacing: 0.02em;
   transition: all 0.3s ease;

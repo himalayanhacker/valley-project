@@ -14,6 +14,7 @@ export default {
         sun: 'rgb(var(--sun) / <alpha-value>)',
         line: 'rgb(var(--line) / <alpha-value>)',
         'line-strong': 'rgb(var(--line-strong) / <alpha-value>)',
+        'on-accent': 'rgb(var(--on-accent) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
