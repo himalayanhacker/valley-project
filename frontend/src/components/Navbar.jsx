@@ -17,10 +17,10 @@ export default function Navbar({ onLoginClick }) {
   ]
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-xl border-b border-[rgba(56,189,248,0.15)]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-canvas/90 backdrop-blur-xl border-b border-line">
       <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-gradient-to-br from-sky to-leaf flex items-center justify-center text-void font-bold text-sm">
+          <div className="w-8 h-8 rounded bg-gradient-to-br from-pine to-moss flex items-center justify-center text-on-accent font-bold text-sm">
             UV
           </div>
           <span className="text-sm font-semibold tracking-wide uppercase">Uttarshall Valley</span>
@@ -32,7 +32,7 @@ export default function Navbar({ onLoginClick }) {
               key={to}
               to={to}
               className={`nav-link text-xs font-semibold uppercase tracking-wide transition-colors ${
-                location.pathname === to ? 'text-sky active' : 'text-sub hover:text-sky'
+                location.pathname === to ? 'text-pine active' : 'text-soft hover:text-pine'
               }`}
             >
               {label}
@@ -62,10 +62,10 @@ export default function Navbar({ onLoginClick }) {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden bg-panel border-t border-[rgba(56,189,248,0.15)]">
+        <div className="md:hidden bg-surface border-t border-line">
           <div className="px-6 py-4 flex flex-col gap-4">
             {links.map(({ to, label }) => (
-              <Link key={to} to={to} className="text-sm font-medium text-sub hover:text-sky transition-colors"
+              <Link key={to} to={to} className="text-sm font-medium text-soft hover:text-pine transition-colors"
                 onClick={() => setMobileOpen(false)}>
                 {label}
               </Link>
