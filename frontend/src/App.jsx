@@ -10,10 +10,16 @@ import { ArticleList, ArticleDetail } from './pages/Explore'
 import Packages from './pages/Packages'
 import Contact from './pages/Contact'
 import useAuthStore from './store/auth'
+import useThemeStore from './store/theme'
 
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false)
   const { fetchMe } = useAuthStore()
+  const { theme } = useThemeStore()
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }, [theme])
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {

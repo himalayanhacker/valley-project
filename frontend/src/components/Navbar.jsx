@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import useAuthStore from '../store/auth'
+import ThemeToggle from './ThemeToggle'
 
 export default function Navbar({ onLoginClick }) {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -40,6 +41,7 @@ export default function Navbar({ onLoginClick }) {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           {isAuthenticated ? (
             <button onClick={logout} className="btn-secondary px-5 py-2 text-xs font-semibold uppercase tracking-wide rounded">
               Sign Out
@@ -69,6 +71,7 @@ export default function Navbar({ onLoginClick }) {
               </Link>
             ))}
             <div className="divider my-2" />
+            <ThemeToggle />
             {isAuthenticated ? (
               <button onClick={logout} className="btn-secondary px-5 py-3 text-sm font-semibold rounded">Sign Out</button>
             ) : (
