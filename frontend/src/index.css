@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --canvas: 250 250 247;
+  --surface: 255 255 255;
+  --ink: 28 43 34;
+  --soft: 92 107 97;
+  --pine: 47 111 79;
+  --moss: 35 82 57;
+  --sun: 217 119 6;
+  --line: 228 231 226;
+  --line-strong: 201 208 202;
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: 15 21 18;
+  --surface: 22 32 27;
+  --ink: 232 237 233;
+  --soft: 154 168 160;
+  --pine: 91 190 139;
+  --moss: 62 146 104;
+  --sun: 245 165 36;
+  --line: 36 48 41;
+  --line-strong: 51 69 59;
+  color-scheme: dark;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,43 +39,19 @@ html {
 }
 
 body {
-  background-color: #010409;
-  color: #e0e0e0;
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--ink));
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
-}
-
-/* Grid Background */
-.grid-bg {
-  background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-/* Scan Line */
-.scan-line {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, transparent, #38bdf8, #4ade80, transparent);
-  animation: scan 4s linear infinite;
-}
-
-@keyframes scan {
-  0% { top: 0; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Buttons */
 .btn-primary {
-  background: linear-gradient(135deg, #38bdf8, #4ade80);
-  color: #010409;
+  background: linear-gradient(135deg, rgb(var(--pine)), rgb(var(--moss)));
+  color: #ffffff;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
@@ -57,21 +59,21 @@ body {
 }
 
 .btn-primary:hover {
-  box-shadow: 0 0 30px rgba(56,189,248,0.4);
+  box-shadow: 0 8px 24px rgb(var(--pine) / 0.35);
   transform: translateY(-2px);
 }
 
 .btn-secondary {
   background: transparent;
-  border: 1px solid rgba(56,189,248,0.3);
-  color: #e0e0e0;
+  border: 1px solid rgb(var(--line-strong));
+  color: rgb(var(--ink));
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  border-color: #38bdf8;
-  color: #38bdf8;
-  background: rgba(56,189,248,0.05);
+  border-color: rgb(var(--pine));
+  color: rgb(var(--pine));
+  background: rgb(var(--pine) / 0.05);
 }
 
 /* Card hover */
@@ -80,14 +82,14 @@ body {
 }
 
 .card-hover:hover {
-  background: rgba(56,189,248,0.03);
-  border-color: rgba(56,189,248,0.5);
+  background: rgb(var(--pine) / 0.04);
+  border-color: rgb(var(--pine) / 0.5);
 }
 
 /* Divider */
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--line-strong)), transparent);
 }
 
 /* Nav link underline */
@@ -102,7 +104,7 @@ body {
   left: 0;
   width: 0;
   height: 1px;
-  background: linear-gradient(to right, #38bdf8, #4ade80);
+  background: linear-gradient(to right, rgb(var(--pine)), rgb(var(--sun)));
   transition: width 0.3s ease;
 }
 
@@ -113,19 +115,19 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0d1117; }
-::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+::-webkit-scrollbar-track { background: rgb(var(--canvas)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--pine) / 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--pine)); }
 
 /* Category tag */
 .category-tag {
-  background: rgba(56,189,248,0.1);
-  color: #38bdf8;
-  border: 1px solid rgba(56,189,248,0.2);
+  background: rgb(var(--pine) / 0.1);
+  color: rgb(var(--pine));
+  border: 1px solid rgb(var(--pine) / 0.2);
   font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: 9999px;
 }

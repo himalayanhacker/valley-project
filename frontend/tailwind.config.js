@@ -1,23 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        void: '#010409',
-        panel: '#0d1117',
-        sky: '#38bdf8',
-        'sky-dark': '#0ea5e9',
-        leaf: '#4ade80',
-        'leaf-dark': '#22c55e',
-        mint: '#38bdf8',
-        sub: '#8b949e',
-        border: 'rgba(56,189,248,0.15)',
-        'border-strong': 'rgba(56,189,248,0.3)',
+        canvas: 'rgb(var(--canvas) / <alpha-value>)',
+        surface: 'rgb(var(--surface) / <alpha-value>)',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
+        soft: 'rgb(var(--soft) / <alpha-value>)',
+        pine: 'rgb(var(--pine) / <alpha-value>)',
+        moss: 'rgb(var(--moss) / <alpha-value>)',
+        sun: 'rgb(var(--sun) / <alpha-value>)',
+        line: 'rgb(var(--line) / <alpha-value>)',
+        'line-strong': 'rgb(var(--line-strong) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
       },
       letterSpacing: {
         tightest: '-0.04em',
