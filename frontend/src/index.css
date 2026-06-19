@@ -14,6 +14,12 @@
   --line-strong: 201 208 202;
   --on-accent: 255 255 255;
   color-scheme: light;
+  /* Animation system */
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 350ms;
+  --dur-base: 650ms;
+  --dur-slow: 950ms;
+  --dur-cinematic: 1200ms;
 }
 
 .dark {
@@ -86,6 +92,8 @@ body {
 .card-hover:hover {
   background: rgb(var(--pine) / 0.04);
   border-color: rgb(var(--pine) / 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgb(var(--pine) / 0.12);
 }
 
 /* Divider */
@@ -120,6 +128,236 @@ body {
 ::-webkit-scrollbar-track { background: rgb(var(--canvas)); }
 ::-webkit-scrollbar-thumb { background: rgb(var(--pine) / 0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgb(var(--pine)); }
+
+/* SVG terrain fill — matches canvas in both light and dark */
+.terrain-fill {
+  fill: rgb(var(--canvas));
+}
+
+/* Topographic contour march animation */
+@keyframes topo-march {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -120; }
+}
+
+/* Photo topo overlay — concentric rings revealed on hover */
+.photo-topo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Ccircle cx='250' cy='250' r='32' fill='none' stroke='white' stroke-width='0.8' stroke-dasharray='5 9' opacity='0.55'/%3E%3Ccircle cx='250' cy='250' r='64' fill='none' stroke='white' stroke-width='0.8' stroke-dasharray='5 9' opacity='0.48'/%3E%3Ccircle cx='250' cy='250' r='96' fill='none' stroke='white' stroke-width='0.8' stroke-dasharray='6 9' opacity='0.42'/%3E%3Ccircle cx='250' cy='250' r='128' fill='none' stroke='white' stroke-width='0.8' stroke-dasharray='6 10' opacity='0.35'/%3E%3Ccircle cx='250' cy='250' r='160' fill='none' stroke='white' stroke-width='0.8' stroke-dasharray='7 10' opacity='0.28'/%3E%3Ccircle cx='250' cy='250' r='195' fill='none' stroke='white' stroke-width='0.7' stroke-dasharray='7 11' opacity='0.22'/%3E%3Ccircle cx='250' cy='250' r='232' fill='none' stroke='white' stroke-width='0.7' stroke-dasharray='8 11' opacity='0.16'/%3E%3Ccircle cx='250' cy='250' r='272' fill='none' stroke='white' stroke-width='0.6' stroke-dasharray='8 12' opacity='0.10'/%3E%3C/svg%3E");
+  background-size: 110% 110%;
+  background-position: center;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .photo-topo:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Photo grid — clip-wipe reveal staggered per photo */
+.photo-item {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.photo-item.photo-revealed {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Info card icon bounce on hover */
+.info-card .card-icon {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+.info-card:hover .card-icon {
+  animation: icon-bounce 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+@keyframes icon-bounce {
+  0%   { transform: scale(1) rotate(0deg); }
+  25%  { transform: scale(1.45) rotate(-10deg); }
+  55%  { transform: scale(0.82) rotate(6deg); }
+  80%  { transform: scale(1.12) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Heading sweep underline — triggered when parent Reveal enters view */
+.sweep-heading {
+  position: relative;
+  display: inline;
+}
+.sweep-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 1.5px;
+  width: 0;
+  background: linear-gradient(90deg, rgb(var(--pine)), rgb(var(--sun)));
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+}
+.reveal.in-view .sweep-heading::after {
+  width: 100%;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.in-view {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Packages page — curtain reveal */
+.pkg-card-overlay {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path var(--dur-slow) var(--ease-luxury);
+}
+@media (hover: hover) {
+  .pkg-card:hover .pkg-card-overlay {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Contact form — focus underline sweep */
+.form-field {
+  position: relative;
+}
+.form-field::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: rgb(var(--pine));
+  transition: width var(--dur-fast) var(--ease-luxury);
+}
+.form-field:focus-within::after {
+  width: 100%;
+}
+
+/* Gallery cinematic scroll — sidebar stagger items */
+.gallery-sidebar-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-luxury), transform var(--dur-slow) var(--ease-luxury);
+}
+.gallery-section.in-view .gallery-sidebar-item:nth-child(1) { opacity: 1; transform: none; transition-delay: 0ms; }
+.gallery-section.in-view .gallery-sidebar-item:nth-child(2) { opacity: 1; transform: none; transition-delay: 150ms; }
+.gallery-section.in-view .gallery-sidebar-item:nth-child(3) { opacity: 1; transform: none; transition-delay: 300ms; }
+.gallery-section.in-view .gallery-sidebar-item:nth-child(4) { opacity: 1; transform: none; transition-delay: 450ms; }
+
+/* Topo map route paths — SVG stroke-dashoffset draw */
+.topo-route {
+  stroke-dashoffset: var(--route-length, 1000);
+  transition: stroke-dashoffset var(--dur-cinematic) var(--ease-luxury),
+              stroke var(--dur-base) ease,
+              stroke-width var(--dur-base) ease,
+              opacity var(--dur-base) ease;
+}
+.topo-route.active {
+  stroke-dashoffset: 0;
+}
+
+/* Topo map pins */
+.topo-pin {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity var(--dur-slow) var(--ease-luxury), transform var(--dur-slow) var(--ease-luxury);
+}
+.topo-pin.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Altitude sparkline draw */
+.sparkline-path {
+  transition: stroke-dashoffset 800ms var(--ease-luxury);
+}
+
+/* ── 3D / Modern animation additions ───────────────────────── */
+
+/* Floating ambient orbs in hero */
+@keyframes orb-drift {
+  0%   { transform: translateY(0px)   translateX(0px)   scale(1); }
+  33%  { transform: translateY(-18px) translateX(8px)  scale(1.04); }
+  66%  { transform: translateY(8px)   translateX(-12px) scale(0.97); }
+  100% { transform: translateY(0px)   translateX(0px)   scale(1); }
+}
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-orb {
+    animation: orb-drift linear infinite;
+  }
+}
+
+/* Glowing stat on complete */
+@keyframes stat-glow {
+  0%   { text-shadow: 0 0 0px transparent; }
+  50%  { text-shadow: 0 0 20px rgb(var(--pine) / 0.5), 0 0 40px rgb(var(--sun) / 0.2); }
+  100% { text-shadow: 0 0 8px rgb(var(--pine) / 0.25); }
+}
+.stat-done {
+  animation: stat-glow 1s var(--ease-luxury) forwards;
+}
+
+/* Floating badge in hero */
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-badge {
+    animation: badge-float 4s ease-in-out infinite;
+  }
+  .hero-badge-2 {
+    animation: badge-float 5.5s ease-in-out infinite;
+    animation-delay: 1.2s;
+  }
+  .hero-badge-3 {
+    animation: badge-float 3.8s ease-in-out infinite;
+    animation-delay: 2.5s;
+  }
+}
+
+/* Card 3D depth — child elements lift further in Z */
+.card-3d-inner {
+  transform: translateZ(20px);
+  transition: transform var(--dur-slow) var(--ease-luxury);
+}
+
+/* Magnetic button press */
+.mag-btn:active {
+  transform: scale(0.96);
+}
 
 /* Category tag */
 .category-tag {

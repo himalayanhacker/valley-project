@@ -17,6 +17,7 @@ export default {
         'on-accent': 'rgb(var(--on-accent) / <alpha-value>)',
       },
       fontFamily: {
+        display: ['Fraunces', 'Georgia', 'serif'],
         sans: ['Inter', 'sans-serif'],
       },
       letterSpacing: {
