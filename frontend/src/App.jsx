@@ -12,6 +12,7 @@ import Packages from './pages/Packages'
 import Contact from './pages/Contact'
 import useAuthStore from './store/auth'
 import useThemeStore from './store/theme'
+import CustomCursor from './components/CustomCursor'
 
 export default function App() {
   const [authOpen, setAuthOpen] = useState(false)
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <>
+      <CustomCursor />
       <Navbar onLoginClick={() => setAuthOpen(true)} />
       <main>
         <PageTransition key={location.pathname}>

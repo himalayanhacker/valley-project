@@ -371,3 +371,66 @@ body {
   padding: 4px 10px;
   border-radius: 9999px;
 }
+
+/* ── Custom cursor: hide native on fine-pointer devices ── */
+@media (pointer: fine) {
+  html, body, * {
+    cursor: none !important;
+  }
+}
+
+/* ── Trek horizontal scroll: hide scrollbar ── */
+.trek-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+.trek-scroll-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Manifesto section: mountain silhouette bottom separator ── */
+.manifesto-separator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* ── Mountain parallax layers depth ordering ── */
+/* z-index assignment:
+   hero image     → z 1
+   topo SVG rings → z 2
+   mountain layers → z 3  (defined on ParallaxMountains wrapper)
+   hero orbs      → z 4 (existing)
+   gradient veil  → z 5 (existing inline style)
+   hero text      → z 10 (existing)
+*/
+
+/* ── Smooth page-level cursor transition areas ── */
+@keyframes cursor-breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+
+/* ── Trek card scroll progress hint pulse ── */
+@keyframes scroll-hint-pulse {
+  0%, 100% { opacity: 0.5; transform: translateX(0); }
+  50%       { opacity: 1;   transform: translateX(6px); }
+}
+.scroll-hint-arrow {
+  animation: scroll-hint-pulse 2s ease-in-out infinite;
+}
+
+/* ── Pine tree layer: ensure crisp edges on high-DPI ── */
+.mountain-pine-layer svg {
+  shape-rendering: crispEdges;
+}
+
+/* ── Manifesto word reveal stagger (CSS fallback for reduced-motion) ── */
+@media (prefers-reduced-motion: reduce) {
+  .manifesto-word {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import client from '../api/client'
-import { IMAGES, getArticleImage, getPackageImage } from '../api/images'
+import { IMAGES, getArticleImage } from '../api/images'
 import Reveal from '../components/Reveal'
 import AltitudeMeter from '../components/AltitudeMeter'
 import TopoBackground from '../components/TopoBackground'
 import Tilt3D from '../components/Tilt3D'
 import MagneticBtn from '../components/MagneticBtn'
+import ParallaxMountains from '../components/ParallaxMountains'
+import ManifestoSection from '../components/ManifestoSection'
+import TrekHighlights from '../components/TrekHighlights'
 
 function DissolveText({ text, className, charClassName, style }) {
   return (
@@ -26,7 +29,7 @@ function DissolveText({ text, className, charClassName, style }) {
 }
 
 const STATS = [
-  { numeric: 4200, suffix: 'm', label: 'Peak Elevation (Shikari Devi)' },
+  { numeric: 2730, suffix: 'm', label: 'Prashar Lake Elevation' },
   { numeric: 1200, suffix: ' km²', label: 'Valley Spread' },
   { numeric: 32, suffix: '', label: 'Trekking Routes' },
   { numeric: 180, suffix: '+', label: 'Wildlife Species' },
@@ -73,10 +76,10 @@ function StatCounter({ numeric, suffix, label }) {
 }
 
 const PHOTOS = [
-  { src: IMAGES.prasharLake,      alt: 'Prashar Lake',           label: 'Prashar Lake',      meta: '2,730m · 31.78°N', aspect: 'aspect-[4/5]', col: 0 },
-  { src: IMAGES.uhlRiver,         alt: 'Uhl River, Barot',       label: 'Uhl River, Barot',  meta: '1,600m · 32.10°N', aspect: 'aspect-square', col: 0 },
-  { src: IMAGES.himachalForest,   alt: 'Deodar Forest',          label: 'Deodar Forests',    meta: '2,100m · 31.75°N', aspect: 'aspect-square', col: 1 },
-  { src: IMAGES.panchvaktraTemple,alt: 'Panchvaktra Temple',     label: 'Panchvaktra Temple',meta: '826m · 31.71°N',   aspect: 'aspect-[4/5]', objPos: 'object-top', col: 1 },
+  { src: IMAGES.prasharLake,      alt: 'Prashar Lake',              label: 'Prashar Lake',         meta: '2,730m · 31.78°N', aspect: 'aspect-[4/5]', col: 0 },
+  { src: IMAGES.iitMandiCampus,   alt: 'IIT Mandi South Campus',    label: 'IIT Mandi, Kamand',    meta: '1,020m · 31.77°N', aspect: 'aspect-square', col: 0 },
+  { src: IMAGES.himachalForest,   alt: 'Deodar Forest',             label: 'Deodar Forests',       meta: '2,100m · 31.75°N', aspect: 'aspect-square', col: 1 },
+  { src: IMAGES.prasharTemple,    alt: 'Prashar Rishi Temple',      label: 'Prashar Rishi Temple', meta: '2,730m · 31.79°N', aspect: 'aspect-[4/5]', objPos: 'object-top', col: 1 },
 ]
 
 function PhotoCard({ photo, globalIdx, hovered, setHovered }) {
@@ -175,7 +178,6 @@ function CoordStamp({ coord }) {
 }
 
 export default function Home() {
-  const [packages, setPackages] = useState([])
   const [articles, setArticles] = useState([])
   const heroImgRef    = useRef(null)
   const heroSectRef   = useRef(null)
@@ -184,7 +186,6 @@ export default function Home() {
   const mouseRaf      = useRef(null)
 
   useEffect(() => {
-    client.get('/packages/').then(r => setPackages(r.data.slice(0, 3)))
     client.get('/articles/').then(r => setArticles(r.data.results?.slice(0, 3) || r.data.slice(0, 3)))
   }, [])
 
@@ -249,7 +250,7 @@ export default function Home() {
           <img
             ref={heroImgRef}
             src={IMAGES.hero}
-            alt="Prashar Lake, Uttarshall Valley"
+            alt="Prashar Lake with temple, Uttarshall Valley"
             className="w-full object-cover absolute left-0"
             style={{ height: '120%', top: '-10%' }}
           />
@@ -258,6 +259,9 @@ export default function Home() {
           <div ref={heroTopoRef} className="absolute inset-0 pointer-events-none" style={{ willChange: 'transform' }}>
             <TopoBackground />
           </div>
+
+          {/* Firewatch-style layered mountain parallax */}
+          <ParallaxMountains />
 
           {/* Ambient floating orbs */}
           <div aria-hidden="true" className="hero-orb" style={{ width: '520px', height: '520px', top: '8%', left: '-12%', background: 'rgb(var(--pine) / 0.18)', animationDuration: '18s' }} />
@@ -378,16 +382,16 @@ export default function Home() {
               <div>
                 <h3 className="sweep-heading text-xl md:text-2xl font-medium tracking-tight mb-6">Where Himalayas Meet the Sky</h3>
                 <div className="space-y-4 text-soft leading-relaxed mt-6">
-                  <p>Nestled in the heart of Mandi district, Himachal Pradesh, Uttarshall Valley spans over 1,200 square kilometres of pristine Himalayan wilderness. The valley's unique geography creates diverse ecosystems — from subtropical forests along the Beas river to alpine meadows and glaciated peaks above 4,000 metres.</p>
+                  <p>Nestled in the heart of Mandi district, Himachal Pradesh, <em>Uttarshall</em> — the name locals have called this valley for generations — spans over 1,200 square kilometres of pristine Himalayan wilderness along the MDR23 Mandi–Bajaura corridor. The valley's geography creates diverse ecosystems, from subtropical forests along the Uhl river to alpine meadows and glaciated peaks above 3,300 metres.</p>
                   <p>Home to the elusive snow leopard, Himalayan brown bear, and the vibrant monal pheasant (Himachal Pradesh's state bird), the valley is a sanctuary for wildlife. Ancient deodar cedar forests cover the mid-elevation slopes, while rhododendron and oak forests burst into colour each spring.</p>
-                  <p>The valley is deeply intertwined with the cultural fabric of Mandi district — famous for its 81 ancient stone temples, the Shivratri festival of gods, and the indigenous Gaddi pastoral communities who have inhabited these mountains for centuries.</p>
+                  <p>The valley is home to IIT Mandi's permanent campus at Kamand — officially addressed "Near Kataula" — one of India's premier technical institutions set within 538 acres of Himalayan landscape on the Uhl riverbank. The valley also serves its community through a government school, Govt. ITI Kataula, and a primary health centre — anchoring it as a living, thriving region beyond its natural beauty.</p>
                 </div>
                 <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-4 mt-8">
                   {[
                     { icon: '☀️', title: 'Best Seasons', desc: 'May – Oct (trekking), Dec – Mar (snow)' },
                     { icon: '🚗', title: 'Accessibility', desc: '5hr from Delhi, 2hr from Chandigarh' },
                     { icon: '✈️', title: 'Nearest Airport', desc: 'Bhuntar (Kullu), ~70 km' },
-                    { icon: '🛡️', title: 'Conservation', desc: 'Shikari Devi Wildlife Sanctuary' },
+                    { icon: '🛡️', title: 'Conservation', desc: 'Western Himalayan Biodiversity Hotspot' },
                   ].map((f, i) => (
                     <Reveal key={i} delay={i * 80}>
                       <div className="info-card p-4 border border-line rounded-lg card-hover h-full">
@@ -406,59 +410,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Packages ── */}
-      <section id="section-packages" className="py-24 md:py-32 bg-surface">
-        <div className="max-w-7xl mx-auto px-6">
-          <Reveal>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-2 h-2 bg-pine rounded-full" />
-                  <span className="text-xs font-medium tracking-widest uppercase text-pine">Packages</span>
-                  <CoordStamp coord="31.75°N · 77.05°E · 1,200m" />
-                </div>
-                <h2 className="font-display text-3xl md:text-5xl font-semibold tracking-tight">Travel Packages</h2>
-              </div>
-              <Link to="/packages" className="btn-secondary px-6 py-3 text-xs font-semibold uppercase tracking-wide rounded">
-                View All Packages
-              </Link>
-            </div>
-          </Reveal>
-          <div className="grid md:grid-cols-3 gap-6">
-            {packages.map((pkg, i) => (
-              <Reveal key={pkg.id} delay={i * 100}>
-                <Tilt3D intensity={6} scale={1.03}>
-                  <div className={`border ${pkg.featured ? 'border-pine' : 'border-line'} rounded-xl overflow-hidden relative h-full`}
-                    style={{ background: 'rgb(var(--surface))', transition: 'box-shadow 0.35s ease', cursor: 'pointer' }}>
-                    {pkg.featured && <div className="absolute top-4 right-4 bg-pine text-on-accent text-xs font-semibold px-3 py-1 rounded z-10">Most Popular</div>}
-                    <div className="aspect-video overflow-hidden group photo-topo">
-                      <img src={getPackageImage(i)} alt={pkg.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    </div>
-                    <div className="p-6 card-3d-inner">
-                      <h3 className="text-xl font-semibold mb-1">{pkg.name}</h3>
-                      <p className="text-sm text-soft mb-4">{pkg.duration_days} Days / {pkg.duration_days - 1} Nights</p>
-                      <ul className="space-y-2 mb-6">
-                        {pkg.highlights?.slice(0, 3).map(h => (
-                          <li key={h} className="flex items-center gap-2 text-sm text-soft">
-                            <span className="text-pine">✓</span> {h}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex items-center justify-between pt-4 border-t border-line">
-                        <div>
-                          <span className="text-2xl font-semibold text-pine">₹{Number(pkg.price).toLocaleString('en-IN')}</span>
-                          <span className="text-xs text-soft"> / person</span>
-                        </div>
-                        <Link to="/packages" className="btn-primary px-6 py-2 text-xs rounded">Book Now</Link>
-                      </div>
-                    </div>
-                  </div>
-                </Tilt3D>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Manifesto ── */}
+      <ManifestoSection />
+
+      {/* ── Trek Highlights ── */}
+      <TrekHighlights />
 
       {/* ── Articles ── */}
       <section id="section-articles" className="py-24 md:py-32">
